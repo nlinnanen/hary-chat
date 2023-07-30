@@ -1,4 +1,4 @@
-import useMessages from "./hooks/useMessages";
+import useMessages from "@hooks/useMessages";
 import { FiSend } from "react-icons/fi";
 
 function Conversation({ conversationId }: { conversationId: number }) {
@@ -13,7 +13,7 @@ function Conversation({ conversationId }: { conversationId: number }) {
 
   return (
     <div className="flex flex-col h-[93vh]">
-      <div className="overflow-y-auto space-y-4 flex flex-col align-bottom p-2">
+      <div className="overflow-y-auto space-y-4 flex h-full flex-col align-bottom p-2">
         {messages.map((message, index) => (
           <div key={index} className="float-right dark:bg-gray-600 rounded-md self-end w-fit break-words max-w-md py-1 px-2">
             <div>{message.content}</div>

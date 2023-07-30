@@ -2,20 +2,14 @@ import { useEffect, useState } from "react";
 import { usePostConversations } from "../api";
 import { generateKeys, getAllConversationIds, storeKeys } from "../utils/crypto/keys";
 import useHary from "./useHary";
+import { useQuery } from "react-query";
 
-export default function useConversations() {
+export default function useConversations(getConversationIds: () => Promise<(number|undefined)[]>) {
   const [conversationId, setConversationId] = useState<null | number>(null);
-  const [conversationIds, setConversationIds] = useState<number[]>([]);
   const { mutate: mutateConversation } = usePostConversations()
+  const { data: conversationIds, refetch } = useQuery('conversationIds', getConversationIds, { staleTime: 1000 * 60 * 60 * 24 })
   const { harys } = useHary()
 
-  useEffect(() => {
-    async function getKeys() {
-      const keys = await getAllConversationIds();
-      setConversationIds(keys);
-    }
-    getKeys().catch(console.error);
-  }, []);
 
   const createConversation = async () => {
     if(!harys) return console.error('harys not loaded');
@@ -32,17 +26,17 @@ export default function useConversations() {
         const id = data.data.data?.id;
         if(!id) return console.error('no id');
         storeKeys(id, privateKey);
-        setConversationIds((prev) => [...prev, id]);
         setConversationId(id);
+        setTimeout(refetch, 100)
       },
     });
     
   };
 
   return {
-    createConversation,
     conversationIds,
     conversationId,
     setConversationId,
+    createConversation,
   }
 }
