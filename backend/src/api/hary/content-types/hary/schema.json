@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "harys",
+  "info": {
+    "singularName": "hary",
+    "pluralName": "harys",
+    "displayName": "Hary",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "adminUser": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "admin::user"
+    },
+    "publicKey": {
+      "type": "text"
+    },
+    "conversation": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::conversation.conversation",
+      "inversedBy": "harys"
+    }
+  }
+}
