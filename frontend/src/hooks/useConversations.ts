@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
-import { usePostConversations } from "../api";
-import { generateKeys, getAllConversationIds, storeKeys } from "../utils/crypto/keys";
-import useHary from "./useHary";
+import { useState } from "react";
 import { useQuery } from "react-query";
+import { usePostConversations } from "../api";
+import { generateKeys, storeKey } from "../utils/crypto/keys";
+import useHary from "./useHary";
 
 export default function useConversations(getConversationIds: () => Promise<(number|undefined)[]>) {
   const [conversationId, setConversationId] = useState<null | number>(null);
@@ -25,7 +25,7 @@ export default function useConversations(getConversationIds: () => Promise<(numb
       onSuccess(data) {
         const id = data.data.data?.id;
         if(!id) return console.error('no id');
-        storeKeys(id, privateKey);
+        storeKey(id, privateKey);
         setConversationId(id);
         setTimeout(refetch, 100)
       },

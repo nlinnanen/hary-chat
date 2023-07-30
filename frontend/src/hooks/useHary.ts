@@ -1,26 +1,26 @@
+import { generateKeys, storeKey } from "@utils/crypto/keys";
 import { useGetHarys, usePostHarys } from "../api";
-import { generateAndStoreHaryKeys } from "../utils/crypto/keys";
 
 export default function useHary() {
-  const { mutate: mutateHary } = usePostHarys()
+  const { mutate: mutateHary } = usePostHarys();
   const { data: haryData } = useGetHarys();
 
   const harys = haryData?.data?.data;
 
   const createHary = async () => {
-    const publicKey = await generateAndStoreHaryKeys();
+    const { privateKey, publicKey } = await generateKeys();
+    await storeKey(privateKey, "hary");
     await mutateHary({
       data: {
         data: {
-          publicKey
-        }
-      }
+          publicKey,
+        },
+      },
     });
-  }
-
+  };
 
   return {
     harys,
-    createHary
-  }
+    createHary,
+  };
 }

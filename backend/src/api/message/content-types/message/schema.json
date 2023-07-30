@@ -12,10 +12,11 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "contentReceiver": {
-      "type": "text"
+    "content": {
+      "type": "text",
+      "required": true
     },
-    "contentSender": {
+    "sender": {
       "type": "text"
     }
   }

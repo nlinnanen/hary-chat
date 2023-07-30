@@ -1,43 +1,40 @@
 import { useEffect, useState } from "react";
 import { usePostMessages, usePutConversationsId } from "../api";
 import { MessageFrontend } from "../types";
-import { decryptMessage, encryptMessage } from "../utils/crypto/messages";
+import { decryptText, encryptText } from "../utils/crypto/messages";
 import useConversation from "./useConversation";
 
-export default function useMessages(conversationId: number) {
+export default function useMessages(
+  conversationId: number,
+  dataBaseKey: string | number = conversationId
+) {
   const [newMessage, setNewMessage] = useState<string>("");
   const [messages, setMessages] = useState<MessageFrontend[]>([]);
-  const { conversation, encryptedMessages, publicKey, isLoading, refetch, conversationHaryPrivateKeys } =
-    useConversation(conversationId);
+  const {
+    conversation,
+    encryptedMessages,
+    publicKey,
+    isLoading,
+    refetch,
+    conversationHaryPrivateKeys,
+  } = useConversation(conversationId);
   const { mutate: updateConversation } = usePutConversationsId();
 
   const { mutate: sendMessage } = usePostMessages();
   useEffect(() => {
     async function fetchMessages() {
-      if (conversation) {
+      if (conversation && encryptedMessages && publicKey) {
         const decryptedMessages = await Promise.all(
           encryptedMessages?.map(async (message): Promise<MessageFrontend> => {
-            if (!message?.contentReceiver && !message?.contentSender) {
-              throw new Error("message is undefined");
-            }
-            let sentByMe = false;
-            let content = "";
-            try {
-              content = await decryptMessage(
-                message.contentSender,
-                conversationId
+              const content = await decryptText(
+                message.content,
+                dataBaseKey,
+                message.sender
               );
-              sentByMe = true;
-            } catch (_e) {
-              content = await decryptMessage(
-                message.contentReceiver,
-                conversationId
-              );
-            }
             return {
               timestamp: new Date(message.createdAt ?? ""),
-              content,
-              sentByMe,
+              content: content ?? "",
+              sentByMe: message.sender === publicKey,
             };
           }) ?? []
         );
@@ -50,33 +47,36 @@ export default function useMessages(conversationId: number) {
 
   const handleSendMessage = async () => {
     if (newMessage.trim() !== "" && publicKey && conversationHaryPrivateKeys) {
-      const contentReceiver = await encryptMessage(newMessage, conversationHaryPrivateKeys);
-      const contentSender = await encryptMessage(newMessage, [publicKey]);
+      const content = await encryptText(newMessage, [
+        ...conversationHaryPrivateKeys,
+        publicKey,
+      ], dataBaseKey);
       sendMessage(
         {
           data: {
             data: {
-              contentReceiver,
-              contentSender,
+              content,
+              sender: publicKey
             },
           },
         },
         {
           onSuccess: (data) => {
-            if(!data.data.data?.id) return console.error("No message id found!")
+            if (!data.data.data?.id)
+              return console.error("No message id found!");
             updateConversation({
               id: conversationId,
               data: {
                 data: {
                   messages: {
                     // @ts-ignore
-                    connect: [data.data.data?.id]
-                  } 
-                }
-              }
-            })
-            console.log('refetching')
-            setTimeout(refetch, 100)
+                    connect: [data.data.data?.id],
+                  },
+                },
+              },
+            });
+            console.log("refetching");
+            setTimeout(refetch, 100);
           },
         }
       );
