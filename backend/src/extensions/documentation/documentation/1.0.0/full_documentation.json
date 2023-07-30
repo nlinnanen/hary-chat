@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2023-07-30T13:51:35.045Z"
+    "x-generation-date": "2023-07-30T19:58:00.797Z"
   },
   "x-strapi-config": {
     "path": "/documentation",
@@ -783,6 +783,9 @@
         ],
         "properties": {
           "data": {
+            "required": [
+              "publicKey"
+            ],
             "type": "object",
             "properties": {
               "adminUser": {
@@ -862,6 +865,9 @@
       },
       "Hary": {
         "type": "object",
+        "required": [
+          "publicKey"
+        ],
         "properties": {
           "adminUser": {
             "type": "object",

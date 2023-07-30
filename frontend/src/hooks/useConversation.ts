@@ -11,12 +11,13 @@ export default function useConversation(conversationId: number) {
   }, axios: { params: { populate: '*' }} });
 
   // Use memo to prevent unnecessary re-renders
-  const { conversation, encryptedMessages, publicKey } = useMemo(() => {
+  const { conversation, encryptedMessages, publicKey, conversationHaryPrivateKeys } = useMemo(() => {
     console.log('conversationData', conversationData);
     const conversation = conversationData?.data?.data;
     const encryptedMessages = conversation?.attributes?.messages?.data?.map((message) => message.attributes);
     const publicKey = conversation?.attributes?.publicKey;
-    return { conversation, encryptedMessages, publicKey };
+    const conversationHaryPrivateKeys = conversation?.attributes?.harys?.data?.map((hary) => hary.attributes?.publicKey).filter((key) => key) as string[];
+    return { conversation, encryptedMessages, publicKey, conversationHaryPrivateKeys };
   }, [conversationData]);
   
   return {
@@ -24,6 +25,7 @@ export default function useConversation(conversationId: number) {
     encryptedMessages,
     publicKey,
     isLoading,
+    conversationHaryPrivateKeys,
     refetch
   }
 }

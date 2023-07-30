@@ -18,7 +18,8 @@
       "target": "admin::user"
     },
     "publicKey": {
-      "type": "text"
+      "type": "text",
+      "required": true
     },
     "conversation": {
       "type": "relation",

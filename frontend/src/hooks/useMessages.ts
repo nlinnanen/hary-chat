@@ -3,15 +3,12 @@ import { usePostMessages, usePutConversationsId } from "../api";
 import { MessageFrontend } from "../types";
 import { decryptMessage, encryptMessage } from "../utils/crypto/messages";
 import useConversation from "./useConversation";
-import useHary from "./useHary";
 
 export default function useMessages(conversationId: number) {
   const [newMessage, setNewMessage] = useState<string>("");
   const [messages, setMessages] = useState<MessageFrontend[]>([]);
-  const { conversation, encryptedMessages, publicKey, isLoading, refetch } =
+  const { conversation, encryptedMessages, publicKey, isLoading, refetch, conversationHaryPrivateKeys } =
     useConversation(conversationId);
-  const { harys } = useHary();
-  const publicKeys = harys?.map((hary) => hary?.attributes?.publicKey ?? "");
   const { mutate: updateConversation } = usePutConversationsId();
 
   const { mutate: sendMessage } = usePostMessages();
@@ -52,8 +49,8 @@ export default function useMessages(conversationId: number) {
   }, [conversation, conversationId, encryptedMessages]);
 
   const handleSendMessage = async () => {
-    if (newMessage.trim() !== "" && publicKey && publicKeys) {
-      const contentReceiver = await encryptMessage(newMessage, publicKeys);
+    if (newMessage.trim() !== "" && publicKey && conversationHaryPrivateKeys) {
+      const contentReceiver = await encryptMessage(newMessage, conversationHaryPrivateKeys);
       const contentSender = await encryptMessage(newMessage, [publicKey]);
       sendMessage(
         {
@@ -85,7 +82,6 @@ export default function useMessages(conversationId: number) {
       );
       setNewMessage("");
     } else {
-      console.log("publicKeys: ", publicKeys);
       alert("Please enter a message");
     }
   };
