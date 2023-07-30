@@ -23,5 +23,5 @@ yarn-debug.log*
 yarn-error.log*
 
 # Generated code
-api.ts
-/models
+/src/model
+/src/api.ts
