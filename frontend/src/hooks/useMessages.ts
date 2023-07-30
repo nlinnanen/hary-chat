@@ -79,7 +79,7 @@ export default function useMessages(conversationId: number) {
               }
             })
             console.log('refetching')
-            refetch();
+            setTimeout(refetch, 100)
           },
         }
       );

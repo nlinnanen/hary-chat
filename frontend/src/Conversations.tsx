@@ -1,51 +1,59 @@
-import { useState } from "react";
 import Conversation from "./Conversation";
 import useConversations from "./hooks/useConversations";
 import useHary from "./hooks/useHary";
-
+import { RxHamburgerMenu } from "react-icons/rx"
 
 export default function Conversations() {
-  const [conversationId, setConversationId] = useState<null | number>(null);
-  const { createConversation, conversationIds } = useConversations();
-  const {createHary} = useHary()
-
-  const handleCreateConversation = () => {
-    createConversation()
-  }
+  const {
+    createConversation,
+    conversationIds,
+    conversationId,
+    setConversationId,
+  } = useConversations();
+  const { createHary } = useHary();
 
   return (
-    <div className="flex w-screen h-screen bg-blue-100">
-      <button onClick={createHary}>Create hary</button>
-      <div className="w-1/4 bg-white h-full flex flex-col items-start overflow-y-auto">
-        <button 
-          className="mt-4 ml-4 px-4 py-2 text-white bg-blue-500 rounded-md" 
-          onClick={handleCreateConversation}
-        >
-          Create conversation 
-        </button>
-        {conversationIds.map((id, index) => (
-          <button
-            key={id}
-            className={`
-              w-full
-              px-4 py-2 
-              ${conversationId === id ? 'bg-blue-200' : 'hover:bg-blue-100'}
-              cursor-pointer
-            `}
-            onClick={() => setConversationId(id)}
-          >
-            Conversation {index + 1}
-          </button>
-        ))}
+    <div className="drawer lg:drawer-open h-screen">
+      <input id="my-drawer" type="checkbox" className="drawer-toggle" />
+      <div className="drawer-side">
+        <label htmlFor="my-drawer" className="drawer-overlay"></label>
+        <ul className="menu h-full w-80 bg-base-200 p-4 text-base-content">
+          <li>
+            <button
+              className="btn btn-neutral align-middle"
+              onClick={createConversation}
+            >
+              Create conversation
+            </button>
+          </li>
+          {conversationIds.map((id, index) => (
+            <li key={id}>
+              <a onClick={() => setConversationId(id)}>
+                Conversation {index + 1}
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
-      <div className="w-3/4 h-full flex flex-col p-4 ">
-        {conversationId ? (
-          <Conversation conversationId={conversationId} />
-        ) : (
-          <div className="flex items-center justify-center h-full">
-            <div className="text-2xl text-gray-500">Select a conversation to start messaging</div>
-          </div>
-        )}
+      <div className="drawer-content w-full max-h-screen items-center justify-center">
+          <label htmlFor="my-drawer" className="btn btn-neutral drawer-button w-fit m-2 lg:invisible">
+            <RxHamburgerMenu />
+          </label>
+          {conversationId ? (
+            <Conversation conversationId={conversationId} />
+          ) : (
+            <div className="flex flex-col h-full items-center justify-center">
+              <div>
+                Create or select a conversation from the menu to start messaging
+              </div>
+              <button
+                className="btn btn-primary"
+                onClick={createConversation}
+              >
+                Create conversation
+              </button>
+            </div>
+          )}
       </div>
     </div>
   );

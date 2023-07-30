@@ -4,6 +4,7 @@ import { generateKeys, getAllConversationIds, storeKeys } from "../utils/crypto/
 import useHary from "./useHary";
 
 export default function useConversations() {
+  const [conversationId, setConversationId] = useState<null | number>(null);
   const [conversationIds, setConversationIds] = useState<number[]>([]);
   const { mutate: mutateConversation } = usePostConversations()
   const { harys } = useHary()
@@ -27,11 +28,12 @@ export default function useConversations() {
         }
       }
     },{
-      onSuccess(data, variables, context) {
+      onSuccess(data) {
         const id = data.data.data?.id;
         if(!id) return console.error('no id');
         storeKeys(id, privateKey);
         setConversationIds((prev) => [...prev, id]);
+        setConversationId(id);
       },
     });
     
@@ -40,5 +42,7 @@ export default function useConversations() {
   return {
     createConversation,
     conversationIds,
+    conversationId,
+    setConversationId,
   }
 }

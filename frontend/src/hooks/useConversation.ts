@@ -6,10 +6,13 @@ export default function useConversation(conversationId: number) {
     data: conversationData,
     refetch,
     isLoading,
-  } = useGetConversationsId(conversationId, { axios: { params: { populate: '*' }} });
+  } = useGetConversationsId(conversationId, { query : {
+    onSuccess: (data) => console.log('data', data),
+  }, axios: { params: { populate: '*' }} });
 
   // Use memo to prevent unnecessary re-renders
   const { conversation, encryptedMessages, publicKey } = useMemo(() => {
+    console.log('conversationData', conversationData);
     const conversation = conversationData?.data?.data;
     const encryptedMessages = conversation?.attributes?.messages?.data?.map((message) => message.attributes);
     const publicKey = conversation?.attributes?.publicKey;
