@@ -1,9 +1,9 @@
 import useMessages from "@hooks/useMessages";
 import { FiSend } from "react-icons/fi";
 
-function Conversation({ conversationId }: { conversationId: number }) {
+function Conversation({ conversationId, databaseKey }: { conversationId: number, databaseKey?: string}) {
   const { newMessage, setNewMessage, messages, handleSendMessage } =
-    useMessages(conversationId);
+    useMessages(conversationId, databaseKey);
 
   const handleKeyUp: React.KeyboardEventHandler<HTMLInputElement> = (e) => {
     if (e.key === "Enter") {
@@ -15,8 +15,8 @@ function Conversation({ conversationId }: { conversationId: number }) {
     <div className="flex flex-col h-[93vh]">
       <div className="overflow-y-auto space-y-4 flex h-full flex-col align-bottom p-2">
         {messages.map((message, index) => (
-          <div key={index} className="float-right dark:bg-gray-600 rounded-md self-end w-fit break-words max-w-md py-1 px-2">
-            <div>{message.content}</div>
+          <div key={index} className={`float-right dark:bg-gray-600 rounded-md w-fit break-words max-w-md py-1 px-2 ${message.sentByMe ? 'self-end' : 'self-start'}`}>
+          <div>{message.content}</div>
             <div className="text-sm text-gray-500">
               {message.timestamp.toLocaleTimeString("fi", { timeStyle: "short" })}
             </div>

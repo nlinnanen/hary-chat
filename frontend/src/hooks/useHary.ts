@@ -3,17 +3,18 @@ import { useGetHarys, usePostHarys } from "../api";
 
 export default function useHary() {
   const { mutate: mutateHary } = usePostHarys();
-  const { data: haryData } = useGetHarys();
+  const { data: haryData } = useGetHarys({ populate: "*" });
 
   const harys = haryData?.data?.data;
 
-  const createHary = async () => {
+  const createHary = async (user: number) => {
     const { privateKey, publicKey } = await generateKeys();
-    await storeKey(privateKey, "hary");
+    await storeKey("hary", privateKey);
     await mutateHary({
       data: {
         data: {
           publicKey,
+          user
         },
       },
     });

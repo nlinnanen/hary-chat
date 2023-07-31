@@ -10,7 +10,7 @@ module.exports = {
     input: {
       target: './src/extensions/documentation/documentation/1.0.0/full_documentation.json',
       filters : {
-        tags: ['Message', 'Hary', 'Conversation'],
+        tags: ['Message', 'Hary', 'Conversation', "Users-Permissions - Auth"],
       },
     }
   },

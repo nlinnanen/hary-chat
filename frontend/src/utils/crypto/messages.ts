@@ -46,6 +46,7 @@ export async function decryptText(
   dataBaseKey: string | number,
   publicKey: string
 ) {
+  console.log('dataBaseKey', dataBaseKey)
   const privateKeyArmored = await getPrivateKey(dataBaseKey);
   const privateKey = await decryptKey({
     privateKey: await readPrivateKey({ armoredKey: privateKeyArmored }),

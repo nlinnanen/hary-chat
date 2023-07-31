@@ -4,8 +4,10 @@ import { RxHamburgerMenu } from "react-icons/rx";
 
 export default function Conversations({
   getConversationIds,
+  databaseKey
 }: {
   getConversationIds: () => Promise<(number|undefined)[]>;
+  databaseKey?: string;
 }) {
   const {
     createConversation,
@@ -50,7 +52,7 @@ export default function Conversations({
           <RxHamburgerMenu />
         </label>
         {conversationId ? (
-          <Conversation conversationId={conversationId} />
+          <Conversation conversationId={conversationId} databaseKey={databaseKey}/>
         ) : (
           <div className="flex h-full flex-col items-center justify-center">
             <div>

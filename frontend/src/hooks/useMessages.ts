@@ -14,12 +14,13 @@ export default function useMessages(
     conversation,
     encryptedMessages,
     publicKey,
+    currentHaryPk,
     isLoading,
     refetch,
     conversationHaryPrivateKeys,
   } = useConversation(conversationId);
   const { mutate: updateConversation } = usePutConversationsId();
-
+  const myPublicKey = dataBaseKey === 'hary' ? currentHaryPk : publicKey
   const { mutate: sendMessage } = usePostMessages();
   useEffect(() => {
     async function fetchMessages() {
@@ -34,7 +35,7 @@ export default function useMessages(
             return {
               timestamp: new Date(message.createdAt ?? ""),
               content: content ?? "",
-              sentByMe: message.sender === publicKey,
+              sentByMe: message.sender === myPublicKey,
             };
           }) ?? []
         );
@@ -56,7 +57,7 @@ export default function useMessages(
           data: {
             data: {
               content,
-              sender: publicKey
+              sender: myPublicKey
             },
           },
         },

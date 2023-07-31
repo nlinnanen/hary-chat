@@ -1,20 +1,16 @@
 import axios from "axios";
 import { useMutation } from "react-query";
+import { postAuthLocal, usePostAuthLocal } from "src/api";
 
 const authenticate = async ({ email, password }: {email: string, password: string}) => {
-  const response = await axios.post("/auth/local", {
-    identifier: email,
-    password: password,
-  });
-  const jwt = response.data.jwt;
-  axios.defaults.headers.common["Authorization"] = `Bearer ${jwt}`;
-  localStorage.setItem("authToken", jwt);
-  return jwt;
+  const response = await axios.post("/auth/local", );
+
 };
 
 
 export default function Login({setIsAuthenticated}: {setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>}) {
   const mutation = useMutation("authenticate", authenticate);
+  const { mutate } = usePostAuthLocal({axios: {params: {populate: '*'}}});
 
   const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -22,11 +18,17 @@ export default function Login({setIsAuthenticated}: {setIsAuthenticated: React.D
       email: { value: string };
       password: { value: string };
     };
-    mutation.mutate({
-      email: form.email.value,
-      password: form.password.value,
+    mutate({
+      data: {
+        identifier: form.email.value,
+        password: form.password.value,
+      },
     }, {
-      onSuccess: () => {
+      onSuccess: (response) => {
+        const jwt = response.data.jwt;
+        axios.defaults.headers.common["Authorization"] = `Bearer ${jwt}`;
+        localStorage.setItem("authToken", jwt || "");
+        localStorage.setItem("userId", response.data.user?.id?.toString() || "");
         setIsAuthenticated(true);
       }
     });

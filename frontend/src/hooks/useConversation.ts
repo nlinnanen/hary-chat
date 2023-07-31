@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useGetConversationsId } from "../api";
 import { ConversationMessagesDataItemAttributes } from "src/model";
+import useHary from "./useHary";
 
 export default function useConversation(conversationId: number) {
   const {
@@ -10,7 +11,11 @@ export default function useConversation(conversationId: number) {
   } = useGetConversationsId(conversationId, {
     axios: { params: { populate: "*" } },
   });
-
+  const { harys } = useHary();
+  const userId = localStorage.getItem("userId");
+  const currentHaryPk = harys?.find(
+    (hary) => hary.attributes?.user?.data?.id === parseInt(userId ?? "")
+  )?.attributes?.publicKey;
   // Use memo to prevent unnecessary re-renders
   const {
     conversation,
@@ -39,6 +44,7 @@ export default function useConversation(conversationId: number) {
     conversation,
     encryptedMessages,
     publicKey,
+    currentHaryPk,
     isLoading,
     conversationHaryPrivateKeys,
     refetch,
