@@ -1,0 +1,23 @@
+1. Fix incrementing ids
+1. Startup questions
+1. UI fixes:
+  1. Create conversation button in menu
+  2. Overflow in create conv viewBox
+  3. Prodeko colors?
+  4. Prodeko logo
+1. Deployment
+  1. Containarize backend
+  1. Build script
+  1. Provision azure resources
+  1. Deploy to azure
+  1. CI/CD for a prod branch
+1. Dev environment
+  1. Dev containers?
+  1. Readme with startup instructions
+  1. Create test data and users
+1. Testing
+  1. Unit tests for crypto operations
+  2. E2e for critical ops
+1. Features:
+  1. Telegram integration
+  1. Sharing private keys to another device
