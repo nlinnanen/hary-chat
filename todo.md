@@ -4,12 +4,12 @@
 - [ ] Startup questions
 - [ ] Passphrases
 - [ ] UI fixes:
-  - [ ] Create conversation button in menu
-  - [ ] Overflow in create conv viewBox
+  - [x] Create conversation button in menu
+  - [x] Overflow in create conv viewBox
   - [ ] Prodeko colors?
   - [ ] Prodeko logo
 - [ ] Deployment
-  - [ ] Containarize backend
+  - [ ] Containerize backend
   - [ ] Build script
   - [ ] Provision azure resources
   - [ ] Deploy to azure
@@ -24,6 +24,7 @@
   - [ ] Unit tests for crypto operations
   - [ ] E2e for critical ops
 - [ ] Features:
+  - [ ] Manage all texts trough strapi
   - [ ] Telegram integration
   - [ ] Sharing private keys to another device
   - [ ] "Tapahtumahäry": time based usage

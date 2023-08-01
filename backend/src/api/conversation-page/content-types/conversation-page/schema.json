@@ -1,0 +1,21 @@
+{
+  "kind": "singleType",
+  "collectionName": "conversation_pages",
+  "info": {
+    "singularName": "conversation-page",
+    "pluralName": "conversation-pages",
+    "displayName": "Conversation page"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "inputPlaceholder": {
+      "type": "string"
+    },
+    "emptyConversationText": {
+      "type": "richtext"
+    }
+  }
+}

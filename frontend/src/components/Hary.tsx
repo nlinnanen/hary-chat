@@ -33,7 +33,9 @@ export default function Hary() {
     }
   }
 
-  if (isLoading) return;
+  if (isLoading) return (
+    <span className="loading loading-ring loading-lg"></span>
+  );
 
   if (!data)
     return (

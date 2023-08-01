@@ -4,9 +4,9 @@ import { RxHamburgerMenu } from "react-icons/rx";
 
 export default function Conversations({
   getConversationIds,
-  databaseKey
+  databaseKey,
 }: {
-  getConversationIds: () => Promise<(number|undefined)[]>;
+  getConversationIds: () => Promise<(number | undefined)[]>;
   databaseKey?: string;
 }) {
   const {
@@ -16,26 +16,25 @@ export default function Conversations({
     setConversationId,
   } = useConversations(getConversationIds);
 
-  if(!conversationIds) return null
+  if (!conversationIds) return null;
 
   return (
     <div className="drawer h-screen lg:drawer-open">
       <input id="my-drawer" type="checkbox" className="drawer-toggle" />
-      <div className="drawer-side">
+      <div className="drawer-side z-10">
         <label htmlFor="my-drawer" className="drawer-overlay"></label>
         <ul className="menu h-full w-80 bg-base-200 p-4 text-base-content">
-          <li>
-            <button
-              className="btn btn-neutral align-middle"
-              onClick={createConversation}
-            >
-              Create conversation
-            </button>
-          </li>
+          <button
+            className="btn btn-neutral align-middle"
+            onClick={createConversation}
+          >
+            Create conversation
+          </button>
           {conversationIds.map((id, index) => {
             if (!id) return null;
+            const isSelected = conversationId === id;
             return (
-              <li key={id}>
+              <li key={id} className={isSelected ? 'bg-gray-800 rounded-lg' : ''}>
                 <a onClick={() => setConversationId(id)}>
                   Conversation {index + 1}
                 </a>
@@ -52,9 +51,12 @@ export default function Conversations({
           <RxHamburgerMenu />
         </label>
         {conversationId ? (
-          <Conversation conversationId={conversationId} databaseKey={databaseKey}/>
+          <Conversation
+            conversationId={conversationId}
+            databaseKey={databaseKey}
+          />
         ) : (
-          <div className="flex h-full flex-col items-center justify-center">
+          <div className="flex h-[93vh] flex-col space-y-10 items-center justify-center">
             <div>
               Create or select a conversation from the menu to start messaging
             </div>
