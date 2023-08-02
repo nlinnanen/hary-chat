@@ -2,6 +2,7 @@ import { generateKeys, storeKey } from "@utils/crypto/keys";
 import { useGetHarys, usePostHarys } from "src/api/hary/hary";
 
 export default function useHary() {
+  const userId = parseInt(localStorage.getItem("userId") ?? '');
   const { mutate: mutateHary } = usePostHarys();
   const { data: haryData, isLoading } = useGetHarys({ populate: "*" });
 
@@ -20,9 +21,14 @@ export default function useHary() {
     });
   };
 
+  const currentHary = harys?.find(
+    (hary) => hary.attributes?.user?.data?.id === userId
+  )?.attributes;
+
   return {
     harys,
     isLoading,
     createHary,
+    currentHary
   };
 }

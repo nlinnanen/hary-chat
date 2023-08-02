@@ -49,17 +49,13 @@ const queryConversation = async (
 export default function useConversation(
   conversationId: number,
   dataBaseKey: string | number,
-  chatRef: React.RefObject<HTMLDivElement>
 ) {
-  const { harys, isLoading: harysLoading } = useHary();
+  const { isLoading: harysLoading, currentHary } = useHary();
   const userId = localStorage.getItem("userId");
-  const currentHaryPk = harys?.find(
-    (hary) => hary.attributes?.user?.data?.id === parseInt(userId ?? "")
-  )?.attributes?.publicKey;
 
   const { data, refetch, isLoading, isRefetching } = useQuery(
-    [conversationId, conversationId, currentHaryPk, dataBaseKey],
-    () => queryConversation(conversationId, currentHaryPk, dataBaseKey),
+    [conversationId, conversationId, currentHary, dataBaseKey],
+    () => queryConversation(conversationId, currentHary?.publicKey, dataBaseKey),
     {
       refetchIntervalInBackground: true,
       refetchInterval: 1000,
@@ -78,7 +74,7 @@ export default function useConversation(
 
   return {
     ...data,
-    currentHaryPk,
+    currentHary,
     conversationHaryPublicKeys,
     refetch,
     conversationLoading: isLoading || harysLoading,

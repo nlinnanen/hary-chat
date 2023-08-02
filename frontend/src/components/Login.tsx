@@ -1,16 +1,14 @@
 import axios from "axios";
 import { useMutation } from "react-query";
 import { usePostAuthLocal } from "src/api/users-permissions-auth/users-permissions-auth";
+import Warning from "./Warning";
 
-const authenticate = async ({ email, password }: {email: string, password: string}) => {
-  const response = await axios.post("/auth/local", );
-
-};
-
-
-export default function Login({setIsAuthenticated}: {setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>}) {
-  const mutation = useMutation("authenticate", authenticate);
-  const { mutate } = usePostAuthLocal({axios: {params: {populate: '*'}}});
+export default function Login({
+  setIsAuthenticated,
+}: {
+  setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
+  const { mutate, error, isError } = usePostAuthLocal({ axios: { params: { populate: "*" } } });
 
   const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -18,30 +16,36 @@ export default function Login({setIsAuthenticated}: {setIsAuthenticated: React.D
       email: { value: string };
       password: { value: string };
     };
-    mutate({
-      data: {
-        identifier: form.email.value,
-        password: form.password.value,
+    mutate(
+      {
+        data: {
+          identifier: form.email.value,
+          password: form.password.value,
+        },
       },
-    }, {
-      onSuccess: (response) => {
-        const jwt = response.data.jwt;
-        axios.defaults.headers.common["Authorization"] = `Bearer ${jwt}`;
-        localStorage.setItem("authToken", jwt || "");
-        localStorage.setItem("userId", response.data.user?.id?.toString() || "");
-        setIsAuthenticated(true);
+      {
+        onSuccess: (response) => {
+          const jwt = response.data.jwt;
+          axios.defaults.headers.common["Authorization"] = `Bearer ${jwt}`;
+          localStorage.setItem("authToken", jwt || "");
+          localStorage.setItem(
+            "userId",
+            response.data.user?.id?.toString() || ""
+          );
+          setIsAuthenticated(true);
+        },
       }
-    });
-  }
-
+    );
+  };
+  console.log(error)
   return (
-    <div className="flex items-center justify-center h-screen">
+    <div className="flex h-screen items-center justify-center">
       <form
         onSubmit={handleLogin}
-        className="bg-gray-700 text-gray-400 shadow-md rounded-xl px-8 pt-6 pb-8 mb-4"
+        className="mb-4 rounded-xl bg-gray-700 px-8 pb-8 pt-6 text-gray-400 shadow-md"
       >
         <div className="mb-4">
-          <label className="block text-sm font-bold mb-2" htmlFor="email">
+          <label className="mb-2 block text-sm font-bold" htmlFor="email">
             Email
           </label>
           <input
@@ -53,7 +57,7 @@ export default function Login({setIsAuthenticated}: {setIsAuthenticated: React.D
           />
         </div>
         <div className="mb-6">
-          <label className="block text-sm font-bold mb-2" htmlFor="password">
+          <label className="mb-2 block text-sm font-bold" htmlFor="password">
             Password
           </label>
           <input
@@ -65,14 +69,21 @@ export default function Login({setIsAuthenticated}: {setIsAuthenticated: React.D
           />
         </div>
         <div className="flex items-center justify-between">
-          <button
-            className="btn btn-primary"
-            type="submit"
-          >
+          <button className="btn btn-primary" type="submit">
             Authenticate
           </button>
         </div>
       </form>
+      {isError && (
+        <div className="toast">
+          <Warning
+            text={
+              error?.response?.data.error.message ??
+              "Error in login!"
+            }
+          />
+        </div>
+      )}
     </div>
-  )
+  );
 }

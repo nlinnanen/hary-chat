@@ -18,7 +18,7 @@ export default function useMessages(
     conversationRefetching,
     conversationHaryPublicKeys,
     refetch,
-  } = useConversation(conversationId, dataBaseKey, chatRef);
+  } = useConversation(conversationId, dataBaseKey);
   const { mutate: updateConversation } = usePutConversationsId();
   const { mutate: sendMessage, isLoading: isSendMessageLoading } =
     usePostMessages();
