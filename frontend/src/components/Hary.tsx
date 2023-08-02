@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import Conversations from "./Conversations";
 import axios from "axios";
-import { getConversations, useGetHarysId } from "src/api";
 import Login from "./Login";
 import useHary from "@hooks/useHary";
 import { getPrivateKey } from "@utils/crypto/keys";
+import { getConversations } from "src/api/conversation/conversation";
 
 const getHaryPrivateKey = async () => {
   const data = await getPrivateKey("hary");
@@ -74,14 +74,9 @@ export default function Hary() {
     );
 
   return (
-    <>
-      <button className="btn btn-primary" onClick={() => createHary(userId)}>
-        Create Hary
-      </button>
       <Conversations
         getConversationIds={getConversationIds}
         databaseKey={"hary"}
       />
-    </>
   );
 }

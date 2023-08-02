@@ -1,9 +1,8 @@
 module.exports = {
   api: {
     output: {
-      mode: 'split',
-      target: '../frontend/src/api.ts',
-      schemas: '../frontend/src/model',
+      mode: 'tags-split',
+      target: '../frontend/src/api/',
       client: 'react-query',
       mock: false,
     },

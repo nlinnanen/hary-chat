@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useQuery } from "react-query";
-import { usePostConversations } from "../api";
 import { generateKeys, storeKey } from "../utils/crypto/keys";
 import useHary from "./useHary";
+import { usePostConversations } from "src/api/conversation/conversation";
 
 export default function useConversations(getConversationIds: () => Promise<(number|undefined)[]>) {
   const [conversationId, setConversationId] = useState<null | number>(null);

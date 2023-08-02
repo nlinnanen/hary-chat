@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.bg-blur {
+  background: linear-gradient(180deg, #1d232b 60%, transparent 100%);
+}

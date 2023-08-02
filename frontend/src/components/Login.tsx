@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useMutation } from "react-query";
-import { postAuthLocal, usePostAuthLocal } from "src/api";
+import { usePostAuthLocal } from "src/api/users-permissions-auth/users-permissions-auth";
 
 const authenticate = async ({ email, password }: {email: string, password: string}) => {
   const response = await axios.post("/auth/local", );

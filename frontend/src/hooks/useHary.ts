@@ -1,5 +1,5 @@
 import { generateKeys, storeKey } from "@utils/crypto/keys";
-import { useGetHarys, usePostHarys } from "../api";
+import { useGetHarys, usePostHarys } from "src/api/hary/hary";
 
 export default function useHary() {
   const { mutate: mutateHary } = usePostHarys();

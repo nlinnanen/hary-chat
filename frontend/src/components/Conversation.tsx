@@ -1,7 +1,8 @@
 import useMessages from "@hooks/useMessages";
+import { createRef, useRef } from "react";
 import { FiSend } from "react-icons/fi";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
-import { useGetConversationPage } from "src/api";
+import { useGetConversationPage } from "src/api/conversation-page/conversation-page";
 
 function Conversation({
   conversationId,
@@ -10,6 +11,8 @@ function Conversation({
   conversationId: number;
   databaseKey?: string;
 }) {
+  const chatRef = useRef<HTMLDivElement>(null);
+
   const {
     newMessage,
     setNewMessage,
@@ -17,11 +20,13 @@ function Conversation({
     handleSendMessage,
     isLoading: conversationLoading,
     isSendMessageLoading,
-  } = useMessages(conversationId, databaseKey);
+  } = useMessages(conversationId, databaseKey, chatRef);
+
   const { data: pageData, isLoading: pageDataLoading } =
     useGetConversationPage();
+
   const isLoading = conversationLoading || pageDataLoading;
-  console.log(conversationLoading, pageDataLoading);
+
   const handleKeyUp: React.KeyboardEventHandler<HTMLInputElement> = (e) => {
     if (e.key === "Enter") {
       handleSendMessage().catch(console.error);
@@ -29,7 +34,7 @@ function Conversation({
   };
 
   const getMessageList = () => {
-    if (!messages) {
+    if (!messages || messages.length === 0) {
       return (
         <div className="flex h-full w-full flex-col items-center justify-center text-center">
           <div className="w-2/3 space-y-5">
@@ -59,15 +64,16 @@ function Conversation({
 
   if (isLoading)
     return (
-      <div className="flex h-[82vh] w-full items-center justify-center text-center">
+      <div className="flex h-[92vh] w-full items-center justify-center text-center">
         <span className="loading loading-lg"></span>
       </div>
     );
 
   return (
-    <div className="flex h-[82vh] w-full flex-col">
-      <div className="flex h-full flex-col space-y-4 overflow-y-auto p-2">
+    <div className="flex h-[92vh] w-full flex-col">
+      <div className="flex h-full flex-col pt-20 space-y-4 overflow-y-auto p-2">
         {getMessageList()}
+        <div ref={chatRef} />
       </div>
       <div className="fixed bottom-0 flex w-full space-x-2 p-5">
         <input

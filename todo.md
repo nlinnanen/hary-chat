@@ -41,6 +41,7 @@
   - [ ] Validate sender public key is hary
   - [ ] Passphrases
 - [ ] Refactor
+  - [ ] Get hary by user id
   - [ ] Reusable ui elements
   - [ ] Seperate logic and ui
   - [ ] Better handle hary private keys

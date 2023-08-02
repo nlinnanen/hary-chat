@@ -1,59 +1,30 @@
 import { useEffect, useState } from "react";
-import { usePostMessages, usePutConversationsId } from "../api";
-import { MessageFrontend } from "../types";
-import { decryptText, encryptText } from "../utils/crypto/messages";
+import { encryptText } from "../utils/crypto/messages";
 import useConversation from "./useConversation";
-import { ConversationMessagesDataItemAttributes } from "src/model";
-import { useQuery } from "react-query";
-
-function fetchMessages(
-  encryptedMessages: ConversationMessagesDataItemAttributes[],
-  myPublicKey: string | undefined,
-  dataBaseKey: string | number
-) {
-  if (!myPublicKey) {
-    alert("No public key found! Are you connected to the internet?");
-    return Promise.resolve([]);
-  }
-  return Promise.all(
-    encryptedMessages?.map(async (message): Promise<MessageFrontend> => {
-      const content = await decryptText(
-        message.content,
-        dataBaseKey,
-        message.sender
-      );
-      return {
-        timestamp: new Date(message.createdAt ?? ""),
-        content: content ?? "",
-        sentByMe: message.sender === myPublicKey,
-      };
-    }) ?? []
-  );
-}
+import { usePutConversationsId } from "src/api/conversation/conversation";
+import { usePostMessages } from "src/api/message/message";
 
 export default function useMessages(
   conversationId: number,
-  dataBaseKey: string | number = conversationId
+  dataBaseKey: string | number = conversationId,
+  chatRef: React.RefObject<HTMLDivElement>
 ) {
   const [newMessage, setNewMessage] = useState<string>("");
   const {
-    conversation,
-    encryptedMessages,
+    messages,
+    myPublicKey,
     publicKey,
-    currentHaryPk,
     conversationLoading,
-    refetch,
+    conversationRefetching,
     conversationHaryPublicKeys,
-  } = useConversation(conversationId);
+    refetch,
+  } = useConversation(conversationId, dataBaseKey, chatRef);
   const { mutate: updateConversation } = usePutConversationsId();
-  const myPublicKey = dataBaseKey === "hary" ? currentHaryPk : publicKey;
   const { mutate: sendMessage, isLoading: isSendMessageLoading } =
     usePostMessages();
-  const { data: messages, isLoading: decryptionLoading } = useQuery(
-    ["decryptMessages", encryptedMessages, myPublicKey, dataBaseKey],
-    () => fetchMessages(encryptedMessages, myPublicKey, dataBaseKey)
-  );
-  const isLoading = conversationLoading || decryptionLoading;
+  const isLoading = !conversationRefetching && conversationLoading;
+
+  useEffect(() => chatRef.current?.scrollIntoView({behavior: "smooth"}), [])
 
   const handleSendMessage = async () => {
     if (newMessage.trim() !== "" && publicKey && conversationHaryPublicKeys) {
@@ -85,9 +56,12 @@ export default function useMessages(
                   },
                 },
               },
+            }, {
+              onSuccess: () => {
+                refetch
+                chatRef.current?.scrollIntoView({ behavior: "smooth" })
+              }
             });
-            console.log("refetching");
-            setTimeout(refetch, 100);
           },
         }
       );
