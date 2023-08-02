@@ -1,24 +1,4 @@
-interface WithId {
-  id: number;
-  createdAt: string;
-  updatedAt: string;
-  publishedAt: string;
-}
-
-export interface ConversationInput {
-  publicKey?: string;
-  messages: Message[];
-  harys: Hary[];
-}
-
-export interface Conversation extends WithId, ConversationInput {}
-
-export interface MessageInput {
-  contentSender: string;
-  contentReceiver: string;
-}
-
-export interface Message extends WithId, MessageInput {}
+import { Conversation } from "./api/documentation.schemas";
 
 export interface MessageFrontend {
   content: string;
@@ -26,7 +6,9 @@ export interface MessageFrontend {
   sentByMe: boolean;
 }
 
-export interface Hary {
-  id: string;
-  publicKey: string;
+export interface ConversationFrontend {
+  messages: MessageFrontend[];
+  myPublicKey: string;
+  publicKey?: string;
+  conversation: Conversation;
 }

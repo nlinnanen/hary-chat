@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import useHary from "./useHary";
 import { decryptText } from "@utils/crypto/messages";
-import { MessageFrontend } from "src/types";
+import { ConversationFrontend, MessageFrontend } from "src/types";
 import { useQuery } from "react-query";
 import { getConversationsId } from "src/api/conversation/conversation";
 
@@ -9,7 +9,7 @@ const queryConversation = async (
   conversationId: number,
   currentHaryPk: string | undefined,
   dataBaseKey: string | number
-) => {
+): Promise<ConversationFrontend> => {
   const { data: conversation } = await getConversationsId(conversationId, {
     params: { populate: "*" },
   });
@@ -18,9 +18,11 @@ const queryConversation = async (
     dataBaseKey === "hary"
       ? currentHaryPk
       : conversation.data?.attributes?.publicKey;
+
   if (!myPublicKey) {
     throw new Error("No public key found!");
   }
+
   const messages = await Promise.all(
     encryptedMessages?.map(
       async ({ attributes: message }): Promise<MessageFrontend> => {
@@ -38,11 +40,12 @@ const queryConversation = async (
       }
     ) ?? []
   );
+
   return {
     messages,
     myPublicKey,
     publicKey: conversation.data?.attributes?.publicKey,
-    conversation: { ...conversation.data?.attributes, messages: undefined },
+    conversation: { ...conversation.data?.attributes!, messages: undefined },
   };
 };
 
@@ -51,10 +54,9 @@ export default function useConversation(
   dataBaseKey: string | number,
 ) {
   const { isLoading: harysLoading, currentHary } = useHary();
-  const userId = localStorage.getItem("userId");
 
   const { data, refetch, isLoading, isRefetching } = useQuery(
-    [conversationId, conversationId, currentHary, dataBaseKey],
+    ['conversation', conversationId, currentHary, dataBaseKey],
     () => queryConversation(conversationId, currentHary?.publicKey, dataBaseKey),
     {
       refetchIntervalInBackground: true,

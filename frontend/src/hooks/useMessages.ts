@@ -3,6 +3,8 @@ import { encryptText } from "../utils/crypto/messages";
 import useConversation from "./useConversation";
 import { usePutConversationsId } from "src/api/conversation/conversation";
 import { usePostMessages } from "src/api/message/message";
+import { useQueryClient } from "react-query";
+import { ConversationFrontend } from "src/types";
 
 export default function useMessages(
   conversationId: number,
@@ -17,14 +19,16 @@ export default function useMessages(
     conversationLoading,
     conversationRefetching,
     conversationHaryPublicKeys,
-    refetch,
+    currentHary,
   } = useConversation(conversationId, dataBaseKey);
   const { mutate: updateConversation } = usePutConversationsId();
   const { mutate: sendMessage, isLoading: isSendMessageLoading } =
     usePostMessages();
+  const queryClient = useQueryClient();
+
   const isLoading = !conversationRefetching && conversationLoading;
 
-  useEffect(() => chatRef.current?.scrollIntoView({behavior: "smooth"}), [])
+  useEffect(() => chatRef.current?.scrollIntoView({ behavior: "smooth" }), []);
 
   const handleSendMessage = async () => {
     if (newMessage.trim() !== "" && publicKey && conversationHaryPublicKeys) {
@@ -44,24 +48,42 @@ export default function useMessages(
         },
         {
           onSuccess: (data) => {
-            if (!data.data.data?.id)
-              return console.error("No message id found!");
-            updateConversation({
-              id: conversationId,
-              data: {
+            const createdMessage = data.data.data?.attributes!;
+            queryClient.setQueryData(
+              ['conversation', conversationId, currentHary?.publicKey, dataBaseKey],
+              (oldData: ConversationFrontend | undefined) => {
+                if (!oldData) throw new Error("No conversation data fetched!");
+                return {
+                  ...oldData,
+                  messages: [
+                    ...oldData.messages,
+                    {
+                      content: newMessage,
+                      timestamp: new Date(createdMessage.createdAt!),
+                      sentByMe: true,
+                    },
+                  ],
+                };
+              }
+            );
+            updateConversation(
+              {
+                id: conversationId,
                 data: {
-                  messages: {
-                    // @ts-ignore
-                    connect: [data.data.data?.id],
+                  data: {
+                    messages: {
+                      // @ts-ignore
+                      connect: [data.data.data?.id],
+                    },
                   },
                 },
               },
-            }, {
-              onSuccess: () => {
-                refetch
-                chatRef.current?.scrollIntoView({ behavior: "smooth" })
+              {
+                onSuccess: () => {
+                  chatRef.current?.scrollIntoView({ behavior: "smooth" });
+                },
               }
-            });
+            );
           },
         }
       );
