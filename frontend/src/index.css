@@ -5,3 +5,6 @@
 .bg-blur {
   background: linear-gradient(180deg, #1d232b 60%, transparent 100%);
 }
+.bg-blur-reverse {
+  background: linear-gradient(0deg, #1d232b 60%, transparent 100%);
+}

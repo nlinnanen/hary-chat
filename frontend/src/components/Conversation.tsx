@@ -2,15 +2,12 @@ import useMessages from "@hooks/useMessages";
 import { createRef, useEffect, useRef } from "react";
 import { FiSend } from "react-icons/fi";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import { useParams } from "react-router-dom";
 import { useGetConversationPage } from "src/api/conversation-page/conversation-page";
 
-function Conversation({
-  conversationId,
-  databaseKey,
-}: {
-  conversationId: number;
-  databaseKey?: string;
-}) {
+function Conversation({ databaseKey }: { databaseKey?: string }) {
+  const { conversationId: cIdParam } = useParams();
+  const conversationId = parseInt(cIdParam ?? "");
   const chatRef = useRef<HTMLDivElement>(null);
 
   const {
@@ -26,7 +23,7 @@ function Conversation({
     useGetConversationPage();
 
   useEffect(() => {
-    console.log('here')
+    console.log("here");
     chatRef.current?.scrollIntoView({ behavior: "instant" });
   }, [conversationId]);
 
@@ -69,18 +66,18 @@ function Conversation({
 
   if (isLoading)
     return (
-      <div className="flex h-[92vh] w-full items-center justify-center text-center">
+      <div className="flex h-full w-full items-center justify-center text-center">
         <span className="loading loading-lg"></span>
       </div>
     );
 
   return (
-    <div className="flex h-[92vh] w-full flex-col">
-      <div className="flex h-full flex-col pt-20 space-y-4 overflow-y-auto p-2">
+    <div className="flex h-full w-full flex-col">
+      <div className="flex h-full flex-col space-y-4 overflow-y-auto p-2 py-16">
         {getMessageList()}
         <div ref={chatRef} />
       </div>
-      <div className="fixed bottom-0 flex w-full space-x-2 p-5">
+      <div className="fixed bottom-0 flex w-full h-30 items-end space-x-2 p-5 bg-blur-reverse z-20">
         <input
           type="text"
           className="input input-bordered flex-grow"

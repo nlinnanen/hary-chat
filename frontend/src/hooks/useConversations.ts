@@ -1,15 +1,20 @@
-import { useState } from "react";
 import { useQuery } from "react-query";
+import { useNavigate, useParams } from "react-router-dom";
+import { usePostConversations } from "src/api/conversation/conversation";
 import { generateKeys, storeKey } from "../utils/crypto/keys";
 import useHary from "./useHary";
-import { usePostConversations } from "src/api/conversation/conversation";
 
 export default function useConversations(getConversationIds: () => Promise<(number|undefined)[]>) {
-  const [conversationId, setConversationId] = useState<null | number>(null);
+  const { conversationId: cIdParam } = useParams();
+  const conversationId = parseInt(cIdParam ?? "");
+  const navigate = useNavigate();
   const { mutate: mutateConversation } = usePostConversations()
   const { data: conversationIds, refetch } = useQuery('conversationIds', getConversationIds, { staleTime: 1000 * 60 * 60 * 24 })
   const { harys } = useHary()
 
+  const setConversationId = (id: number) => {
+    navigate(`/conversation/${id}`);
+  }
 
   const createConversation = async () => {
     if(!harys) return console.error('harys not loaded');

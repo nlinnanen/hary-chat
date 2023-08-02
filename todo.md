@@ -3,6 +3,7 @@
 - [ ] Fix incrementing ids
 - [ ] Startup questions
 - [ ] Passphrases
+- [ ] PWA
 - [ ] UI fixes:
   - [x] Create conversation button in menu
   - [x] Overflow in create conv viewBox
@@ -22,6 +23,7 @@
   - [ ] Dev containers?
   - [ ] Readme with startup instructions
   - [ ] Create test data and users
+  - [ ] Monorepo?
 - [ ] Testing
   - [ ] Unit tests for crypto operations
   - [ ] E2e for critical ops
