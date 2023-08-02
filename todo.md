@@ -8,11 +8,11 @@
   - [x] Overflow in create conv viewBox
   - [ ] Prodeko colors?
   - [ ] Prodeko logo
-  - [ ] Empty conv message not centered
-  - [ ] Input not bottom on phone screen
+  - [x] Empty conv message not centered
+  - [x] Input not bottom on phone screen
 - [ ] Deployment
-  - [ ] Containerize backend
-  - [ ] Build script
+  - [x] Containerize backend
+  - [x] Build script
   - [ ] Provision azure resources
   - [ ] Deploy to azure
   - [ ] CI/CD for a prod branch
@@ -41,7 +41,7 @@
   - [ ] Validate sender public key is hary
   - [ ] Passphrases
 - [ ] Refactor
-  - [ ] Get hary by user id
+  - [x] Get hary by user id
   - [ ] Reusable ui elements
   - [ ] Seperate logic and ui
   - [ ] Better handle hary private keys
