@@ -1,5 +1,5 @@
 import useMessages from "@hooks/useMessages";
-import { createRef, useRef } from "react";
+import { createRef, useEffect, useRef } from "react";
 import { FiSend } from "react-icons/fi";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import { useGetConversationPage } from "src/api/conversation-page/conversation-page";
@@ -24,6 +24,11 @@ function Conversation({
 
   const { data: pageData, isLoading: pageDataLoading } =
     useGetConversationPage();
+
+  useEffect(() => {
+    console.log('here')
+    chatRef.current?.scrollIntoView({ behavior: "instant" });
+  }, [conversationId]);
 
   const isLoading = conversationLoading || pageDataLoading;
 
