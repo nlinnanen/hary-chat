@@ -7,11 +7,11 @@ export default function useConversation(conversationId: number) {
   const {
     data: conversationData,
     refetch,
-    isLoading,
+    isLoading
   } = useGetConversationsId(conversationId, {
     axios: { params: { populate: "*" } },
   });
-  const { harys } = useHary();
+  const { harys, isLoading: harysLoading } = useHary();
   const userId = localStorage.getItem("userId");
   const currentHaryPk = harys?.find(
     (hary) => hary.attributes?.user?.data?.id === parseInt(userId ?? "")
@@ -21,14 +21,14 @@ export default function useConversation(conversationId: number) {
     conversation,
     encryptedMessages,
     publicKey,
-    conversationHaryPrivateKeys,
+    conversationHaryPublicKeys,
   } = useMemo(() => {
     const conversation = conversationData?.data?.data;
     const publicKey = conversation?.attributes?.publicKey;
     const encryptedMessages = conversation?.attributes?.messages?.data
       ?.map((message) => message.attributes)
       .filter((m) => m) as ConversationMessagesDataItemAttributes[];
-    const conversationHaryPrivateKeys = conversation?.attributes?.harys?.data
+    const conversationHaryPublicKeys = conversation?.attributes?.harys?.data
       ?.map((hary) => hary.attributes?.publicKey)
       .filter((key) => key) as string[];
 
@@ -36,7 +36,7 @@ export default function useConversation(conversationId: number) {
       conversation,
       encryptedMessages,
       publicKey,
-      conversationHaryPrivateKeys,
+      conversationHaryPublicKeys,
     };
   }, [conversationData]);
 
@@ -45,8 +45,8 @@ export default function useConversation(conversationId: number) {
     encryptedMessages,
     publicKey,
     currentHaryPk,
-    isLoading,
-    conversationHaryPrivateKeys,
+    conversationHaryPublicKeys,
     refetch,
+    conversationLoading: isLoading || harysLoading,
   };
 }

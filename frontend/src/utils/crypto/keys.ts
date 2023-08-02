@@ -2,18 +2,14 @@ import { generateKey } from "openpgp";
 import openDatabase from "../indexed_db";
 
 export async function storeKey(dataBaseKey: string | number, privateKeyArmored: string) {
-  console.log("storing key", dataBaseKey, privateKeyArmored)
     // Step 2: Prepare these keys for storage
     const privateKeyData = new TextEncoder().encode(privateKeyArmored);
 
     // Step 3: Store these keys in IndexedDB
     const db = await openDatabase();
     const tx = db.transaction("keys", "readwrite");
-    console.log("Generating keys");
     tx.objectStore("keys").put(privateKeyData, dataBaseKey);
-    tx.commit();
-    
-    console.log("Keys stored successfully");
+    tx.commit();    
 }
 
 export async function getPrivateKey(dataBaseKey: string | number): Promise<string> {

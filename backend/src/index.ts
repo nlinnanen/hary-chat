@@ -1,5 +1,3 @@
-import orval from 'orval';
-
 export default {
   /**
    * An asynchronous register function that runs before
@@ -17,8 +15,9 @@ export default {
    * run jobs, or perform some special logic.
    */
   bootstrap(/*{ strapi }*/) {
-    if (process.env.NODE_ENV === 'development') {
-      orval('./orval.config.js');
+    if (process.env.NODE_ENV === "development") {
+      const orval = require("orval");
+      orval.generate("./orval.config.js");
     }
   },
 };

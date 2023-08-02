@@ -8,6 +8,8 @@
   - [x] Overflow in create conv viewBox
   - [ ] Prodeko colors?
   - [ ] Prodeko logo
+  - [ ] Empty conv message not centered
+  - [ ] Input not bottom on phone screen
 - [ ] Deployment
   - [ ] Containerize backend
   - [ ] Build script

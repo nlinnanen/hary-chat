@@ -25,12 +25,10 @@ export async function encryptText(
     // TODO get passphrase from user
     passphrase: "super secure passphrase",
   });
-  console.log('before sign', text )
   const signedMessage = await sign({
     message,
     signingKeys: privateKey,
   });
-  console.log('after sign', signedMessage )
   const encryptedText = await encrypt({
     message: await createMessage({ text: signedMessage }),
     encryptionKeys: await Promise.all(
@@ -46,7 +44,6 @@ export async function decryptText(
   dataBaseKey: string | number,
   publicKey: string
 ) {
-  console.log('dataBaseKey', dataBaseKey)
   const privateKeyArmored = await getPrivateKey(dataBaseKey);
   const privateKey = await decryptKey({
     privateKey: await readPrivateKey({ armoredKey: privateKeyArmored }),
@@ -61,7 +58,6 @@ export async function decryptText(
     message,
     decryptionKeys: privateKey,
   });
-  console.log("data", data)
   const verification = await verify({
     message: await createCleartextMessage({ text: data }),
     verificationKeys: await readKey({ armoredKey: publicKey }),

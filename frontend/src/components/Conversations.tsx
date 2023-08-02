@@ -56,8 +56,8 @@ export default function Conversations({
             databaseKey={databaseKey}
           />
         ) : (
-          <div className="flex h-[93vh] flex-col space-y-10 items-center justify-center">
-            <div>
+          <div className="flex h-[93vh] flex-col space-y-10 text-center items-center justify-center">
+            <div className="w-2/3">
               Create or select a conversation from the menu to start messaging
             </div>
             <button className="btn btn-primary" onClick={createConversation}>

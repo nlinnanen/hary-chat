@@ -10,10 +10,18 @@ function Conversation({
   conversationId: number;
   databaseKey?: string;
 }) {
-  const { newMessage, setNewMessage, messages, handleSendMessage } =
-    useMessages(conversationId, databaseKey);
-  const { data: pageData, isLoading } = useGetConversationPage();
-
+  const {
+    newMessage,
+    setNewMessage,
+    messages,
+    handleSendMessage,
+    isLoading: conversationLoading,
+    isSendMessageLoading,
+  } = useMessages(conversationId, databaseKey);
+  const { data: pageData, isLoading: pageDataLoading } =
+    useGetConversationPage();
+  const isLoading = conversationLoading || pageDataLoading;
+  console.log(conversationLoading, pageDataLoading);
   const handleKeyUp: React.KeyboardEventHandler<HTMLInputElement> = (e) => {
     if (e.key === "Enter") {
       handleSendMessage().catch(console.error);
@@ -21,11 +29,16 @@ function Conversation({
   };
 
   const getMessageList = () => {
-    if (messages.length === 0) {
+    if (!messages) {
       return (
-          <div className="flex h-full flex-col items-center justify-center">
-            <ReactMarkdown skipHtml={false}>{pageData?.data?.data?.attributes?.emptyConversationText ?? 'No messages yet!'}</ReactMarkdown>
+        <div className="flex h-full w-full flex-col items-center justify-center text-center">
+          <div className="w-2/3 space-y-5">
+            <ReactMarkdown skipHtml={false}>
+              {pageData?.data?.data?.attributes?.emptyConversationText ??
+                "No messages yet!"}
+            </ReactMarkdown>
           </div>
+        </div>
       );
     } else {
       return messages.map((message, index) => (
@@ -45,14 +58,18 @@ function Conversation({
   };
 
   if (isLoading)
-    return <span className="loading loading-ring loading-lg"></span>;
+    return (
+      <div className="flex h-[82vh] w-full items-center justify-center text-center">
+        <span className="loading loading-lg"></span>
+      </div>
+    );
 
   return (
-    <div className="flex h-[93vh] w-full flex-col">
+    <div className="flex h-[82vh] w-full flex-col">
       <div className="flex h-full flex-col space-y-4 overflow-y-auto p-2">
         {getMessageList()}
       </div>
-      <div className="flex space-x-2 p-2">
+      <div className="fixed bottom-0 flex w-full space-x-2 p-5">
         <input
           type="text"
           className="input input-bordered flex-grow"
@@ -65,7 +82,11 @@ function Conversation({
           onChange={(e) => setNewMessage(e.target.value)}
         />
         <button className="btn btn-accent" onClick={handleSendMessage}>
-          <FiSend />
+          {isSendMessageLoading ? (
+            <span className="loading loading-lg"></span>
+          ) : (
+            <FiSend />
+          )}
         </button>
       </div>
     </div>

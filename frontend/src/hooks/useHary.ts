@@ -3,7 +3,7 @@ import { useGetHarys, usePostHarys } from "../api";
 
 export default function useHary() {
   const { mutate: mutateHary } = usePostHarys();
-  const { data: haryData } = useGetHarys({ populate: "*" });
+  const { data: haryData, isLoading } = useGetHarys({ populate: "*" });
 
   const harys = haryData?.data?.data;
 
@@ -22,6 +22,7 @@ export default function useHary() {
 
   return {
     harys,
+    isLoading,
     createHary,
   };
 }
