@@ -6,8 +6,7 @@ import { useParams } from "react-router-dom";
 import { useGetConversationPage } from "src/api/conversation-page/conversation-page";
 
 function Conversation({ databaseKey }: { databaseKey?: string }) {
-  const { conversationId: cIdParam } = useParams();
-  const conversationId = parseInt(cIdParam ?? "");
+  const conversationId = useParams().conversationId!;
   const chatRef = useRef<HTMLDivElement>(null);
 
   const {
@@ -23,7 +22,6 @@ function Conversation({ databaseKey }: { databaseKey?: string }) {
     useGetConversationPage();
 
   useEffect(() => {
-    console.log("here");
     chatRef.current?.scrollIntoView({ behavior: "instant" });
   }, [conversationId]);
 

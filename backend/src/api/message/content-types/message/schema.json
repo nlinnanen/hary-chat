@@ -17,7 +17,14 @@
       "required": true
     },
     "sender": {
-      "type": "text"
+      "type": "text",
+      "required": true
+    },
+    "conversation": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::conversation.conversation",
+      "inversedBy": "messages"
     }
   }
 }

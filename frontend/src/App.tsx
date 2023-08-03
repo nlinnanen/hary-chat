@@ -14,6 +14,7 @@ function App() {
         <Route path="/hary" element={<Hary />} />
         <Route path="/" element={<Public />} />
         <Route path="/conversation/:conversationId" element={<Public />} />
+        <Route path="hary/conversation/:conversationId" element={<Hary />} />
       </Routes>
     </QueryClientProvider>
   );

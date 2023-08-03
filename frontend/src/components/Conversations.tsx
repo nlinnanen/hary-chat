@@ -6,7 +6,7 @@ export default function Conversations({
   getConversationIds,
   databaseKey,
 }: {
-  getConversationIds: () => Promise<(number | undefined)[]>;
+  getConversationIds: () => Promise<(string | undefined)[]>;
   databaseKey?: string;
 }) {
   const {

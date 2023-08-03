@@ -1,7 +1,7 @@
 import { generateKey } from "openpgp";
 import openDatabase from "../indexed_db";
 
-export async function storeKey(dataBaseKey: string | number, privateKeyArmored: string) {
+export async function storeKey(dataBaseKey: string, privateKeyArmored: string) {
     // Step 2: Prepare these keys for storage
     const privateKeyData = new TextEncoder().encode(privateKeyArmored);
 
@@ -12,7 +12,7 @@ export async function storeKey(dataBaseKey: string | number, privateKeyArmored: 
     tx.commit();    
 }
 
-export async function getPrivateKey(dataBaseKey: string | number): Promise<string> {
+export async function getPrivateKey(dataBaseKey: string): Promise<string> {
   const db = await openDatabase();
   const tx = db.transaction("keys", "readonly");
   const store = tx.objectStore("keys");
@@ -36,20 +36,20 @@ export async function getPrivateKey(dataBaseKey: string | number): Promise<strin
   });
 }
 
-export async function getAllConversationIds(): Promise<number[]> {
+export async function getAllConversationIds(): Promise<string[]> {
   const db = await openDatabase();
   const tx = db.transaction("keys", "readonly");
   const store = tx.objectStore("keys");
   const cursorRequest = store.openCursor();
 
   return new Promise((resolve, reject) => {
-    const conversationIds: number[] = [];
+    const conversationIds: string[] = [];
 
     cursorRequest.onsuccess = (event: Event) => {
       const cursor = (event.target as IDBRequest).result as IDBCursorWithValue;
       if (cursor) {
-        const value = parseInt((cursor.key as string));
-        if(!isNaN(value)) conversationIds.push(value);
+        const value = cursor.key as string;
+        if(value !== 'hary') conversationIds.push(value);
         cursor.continue(); // Move to the next record
       } else {
         resolve(conversationIds); // Cursor has reached the end, return the public keys

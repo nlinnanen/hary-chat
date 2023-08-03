@@ -21,10 +21,15 @@
     "messages": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::message.message"
+      "target": "api::message.message",
+      "mappedBy": "conversation"
     },
     "publicKey": {
       "type": "text",
+      "required": true
+    },
+    "uuid": {
+      "type": "uid",
       "required": true
     }
   }

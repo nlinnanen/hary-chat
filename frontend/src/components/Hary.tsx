@@ -19,7 +19,7 @@ export default function Hary() {
 
   const getConversationIds = async () => {
     const data = await getConversations();
-    return data.data.data?.map((conversation) => conversation.id) ?? [];
+    return data.data.data?.map((conversation) => conversation.attributes?.uuid) ?? [];
   };
 
   if (!axios.defaults.headers.common["Authorization"]) {

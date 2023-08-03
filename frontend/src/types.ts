@@ -9,6 +9,7 @@ export interface MessageFrontend {
 export interface ConversationFrontend {
   messages: MessageFrontend[];
   myPublicKey: string;
-  publicKey?: string;
-  conversation: Conversation;
+  publicKey: string;
+  conversation: any;
+  conversationDbId: number;
 }

@@ -24,7 +24,6 @@ export default function useHary() {
   const currentHary = harys?.find(
     (hary) => hary.attributes?.user?.data?.id === userId
   )?.attributes;
-
   return {
     harys,
     isLoading,

@@ -4,20 +4,20 @@ import { decryptText } from "@utils/crypto/messages";
 import { ConversationFrontend, MessageFrontend } from "src/types";
 import { useQuery } from "react-query";
 import { getConversationsId } from "src/api/conversation/conversation";
+import axios from "axios";
+import { Message } from "src/api/documentation.schemas";
 
 const queryConversation = async (
-  conversationId: number,
+  conversationId: string,
   currentHaryPk: string | undefined,
-  dataBaseKey: string | number
+  dataBaseKey: string
 ): Promise<ConversationFrontend> => {
-  const { data: conversation } = await getConversationsId(conversationId, {
-    params: { populate: "*" },
-  });
-  const encryptedMessages = conversation?.data?.attributes?.messages?.data;
+  const {data: conversation} = await axios.get(`/conversation-by-pk/${conversationId}`)
+  const encryptedMessages = conversation.messages;
   const myPublicKey =
     dataBaseKey === "hary"
-      ? currentHaryPk
-      : conversation.data?.attributes?.publicKey;
+      ? currentHaryPk!
+      : conversation.publicKey;
 
   if (!myPublicKey) {
     throw new Error("No public key found!");
@@ -25,7 +25,7 @@ const queryConversation = async (
 
   const messages = await Promise.all(
     encryptedMessages?.map(
-      async ({ attributes: message }): Promise<MessageFrontend> => {
+      async (message: Message): Promise<MessageFrontend> => {
         if (!message) throw new Error("Undefined message!");
         const content = await decryptText(
           message.content,
@@ -44,14 +44,15 @@ const queryConversation = async (
   return {
     messages,
     myPublicKey,
-    publicKey: conversation.data?.attributes?.publicKey,
-    conversation: { ...conversation.data?.attributes!, messages: undefined },
+    publicKey: conversation.publicKey,
+    conversation: { ...conversation, messages: undefined },
+    conversationDbId: conversation.id
   };
 };
 
 export default function useConversation(
-  conversationId: number,
-  dataBaseKey: string | number,
+  conversationId: string,
+  dataBaseKey: string,
 ) {
   const { isLoading: harysLoading, currentHary } = useHary();
 
@@ -65,9 +66,9 @@ export default function useConversation(
   );
   // Use memo to prevent unnecessary re-renders
   const { conversationHaryPublicKeys } = useMemo(() => {
-    const conversationHaryPublicKeys = data?.conversation.harys?.data
-      ?.map((hary) => hary.attributes?.publicKey)
-      .filter((key) => key) as string[];
+    const conversationHaryPublicKeys = data?.conversation.harys
+      ?.map((hary: any) => hary.publicKey)
+      .filter((key: any) => key) as string[];
 
     return {
       conversationHaryPublicKeys,

@@ -7,8 +7,8 @@ import { useQueryClient } from "react-query";
 import { ConversationFrontend } from "src/types";
 
 export default function useMessages(
-  conversationId: number,
-  dataBaseKey: string | number = conversationId,
+  conversationId: string,
+  dataBaseKey: string = conversationId,
   chatRef: React.RefObject<HTMLDivElement>
 ) {
   const [newMessage, setNewMessage] = useState<string>("");
@@ -20,6 +20,8 @@ export default function useMessages(
     conversationRefetching,
     conversationHaryPublicKeys,
     currentHary,
+    conversation,
+    conversationDbId,
   } = useConversation(conversationId, dataBaseKey);
   const { mutate: updateConversation } = usePutConversationsId();
   const { mutate: sendMessage, isLoading: isSendMessageLoading } =
@@ -31,7 +33,13 @@ export default function useMessages(
   useEffect(() => chatRef.current?.scrollIntoView({ behavior: "smooth" }), []);
 
   const handleSendMessage = async () => {
-    if (newMessage.trim() !== "" && publicKey && conversationHaryPublicKeys) {
+    if (
+      newMessage.trim() !== "" &&
+      !conversationLoading &&
+      conversationHaryPublicKeys &&
+      publicKey &&
+      myPublicKey
+    ) {
       const content = await encryptText(
         newMessage,
         [...conversationHaryPublicKeys, publicKey],
@@ -43,6 +51,7 @@ export default function useMessages(
             data: {
               content,
               sender: myPublicKey,
+              conversation: conversationDbId,
             },
           },
         },
@@ -50,7 +59,7 @@ export default function useMessages(
           onSuccess: (data) => {
             const createdMessage = data.data.data?.attributes!;
             queryClient.setQueryData(
-              ['conversation', conversationId, currentHary?.publicKey, dataBaseKey],
+              ["conversation", conversationId, currentHary, dataBaseKey],
               (oldData: ConversationFrontend | undefined) => {
                 if (!oldData) throw new Error("No conversation data fetched!");
                 return {
@@ -66,24 +75,7 @@ export default function useMessages(
                 };
               }
             );
-            updateConversation(
-              {
-                id: conversationId,
-                data: {
-                  data: {
-                    messages: {
-                      // @ts-ignore
-                      connect: [data.data.data?.id],
-                    },
-                  },
-                },
-              },
-              {
-                onSuccess: () => {
-                  chatRef.current?.scrollIntoView({ behavior: "smooth" });
-                },
-              }
-            );
+            chatRef.current?.scrollIntoView({ behavior: "smooth" });
           },
         }
       );

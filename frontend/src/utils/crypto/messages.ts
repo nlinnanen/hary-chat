@@ -16,7 +16,7 @@ import { getPrivateKey } from "./keys";
 export async function encryptText(
   text: string,
   publicKeys: string[],
-  dataBaseKey: string | number
+  dataBaseKey: string
 ) {
   const message = await createCleartextMessage({ text });
   const privateKeyString = await getPrivateKey(dataBaseKey);
@@ -41,7 +41,7 @@ export async function encryptText(
 
 export async function decryptText(
   encrypted: string,
-  dataBaseKey: string | number,
+  dataBaseKey: string,
   publicKey: string
 ) {
   const privateKeyArmored = await getPrivateKey(dataBaseKey);
