@@ -12,12 +12,6 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "harys": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::hary.hary",
-      "mappedBy": "conversation"
-    },
     "messages": {
       "type": "relation",
       "relation": "oneToMany",
@@ -31,6 +25,12 @@
     "uuid": {
       "type": "uid",
       "required": true
+    },
+    "harys": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::hary.hary",
+      "mappedBy": "conversations"
     }
   }
 }

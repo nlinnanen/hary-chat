@@ -22,9 +22,9 @@
       "type": "text",
       "required": true
     },
-    "conversation": {
+    "conversations": {
       "type": "relation",
-      "relation": "manyToOne",
+      "relation": "manyToMany",
       "target": "api::conversation.conversation",
       "inversedBy": "harys"
     }

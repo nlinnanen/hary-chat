@@ -1,22 +1,22 @@
 import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { usePostConversations } from "src/api/conversation/conversation";
-import { generateKeys, storeKey } from "../utils/crypto/keys";
+import { createUserId, generateKeys, storeKey } from "../utils/crypto/keys";
 import { v4 } from "uuid";
 import useHary from "./useHary";
 
 export default function useConversations(
   getConversationIds: () => Promise<(string | undefined)[]>
 ) {
-  const { conversationId } = useParams();
   const navigate = useNavigate();
+  const { conversationId } = useParams();
   const { mutate: mutateConversation } = usePostConversations();
+  const { harys } = useHary();
   const { data: conversationIds, refetch } = useQuery(
     "conversationIds",
     getConversationIds,
-    { staleTime: 1000 * 60 * 60 * 24 }
+    { staleTime: 1000 * 60 * 5, enabled: !!harys }
   );
-  const { harys } = useHary();
 
   const setConversationId = (id: string) => {
     if (location.pathname.includes("hary")) {
@@ -28,6 +28,9 @@ export default function useConversations(
 
   const createConversation = async () => {
     if (!harys) return console.error("harys not loaded");
+    if (conversationIds?.length === 0) await createUserId();
+
+    const uuid = v4();
     const { publicKey, privateKey } = await generateKeys();
     await mutateConversation(
       {
@@ -35,7 +38,7 @@ export default function useConversations(
           data: {
             publicKey,
             harys: harys.map((hary) => hary.id ?? ""),
-            uuid: v4(),
+            uuid,
           },
         },
       },

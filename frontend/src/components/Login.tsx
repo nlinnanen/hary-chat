@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useMutation } from "react-query";
 import { usePostAuthLocal } from "src/api/users-permissions-auth/users-permissions-auth";
 import Warning from "./Warning";
 
@@ -42,7 +41,7 @@ export default function Login({
     <div className="flex h-screen items-center justify-center">
       <form
         onSubmit={handleLogin}
-        className="mb-4 rounded-xl bg-gray-700 px-8 pb-8 pt-6 text-gray-400 shadow-md"
+        className="mb-4 rounded-xl bg-base-200 px-8 pb-8 pt-6 text-base-content shadow-md"
       >
         <div className="mb-4">
           <label className="mb-2 block text-sm font-bold" htmlFor="email">

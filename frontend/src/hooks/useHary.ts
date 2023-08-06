@@ -1,4 +1,4 @@
-import { generateKeys, storeKey } from "@utils/crypto/keys";
+import { createUserId, generateKeys, getUserId, storeKey } from "@utils/crypto/keys";
 import { useGetHarys, usePostHarys } from "src/api/hary/hary";
 
 export default function useHary() {
@@ -9,9 +9,10 @@ export default function useHary() {
   const harys = haryData?.data?.data;
 
   const createHary = async (user: number) => {
+    await createUserId( "Hary")
     const { privateKey, publicKey } = await generateKeys();
     await storeKey("hary", privateKey);
-    await mutateHary({
+    mutateHary({
       data: {
         data: {
           publicKey,
@@ -24,6 +25,7 @@ export default function useHary() {
   const currentHary = harys?.find(
     (hary) => hary.attributes?.user?.data?.id === userId
   )?.attributes;
+  
   return {
     harys,
     isLoading,

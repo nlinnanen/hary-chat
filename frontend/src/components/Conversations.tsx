@@ -32,7 +32,7 @@ export default function Conversations({
                 return (
                   <li
                     key={id}
-                    className={isSelected ? "rounded-lg bg-gray-800" : ""}
+                    className={isSelected ? "rounded-lg bg-neutral text-neutral-content" : ""}
                   >
                     <a onClick={() => setConversationId(id)}>
                       Conversation {index + 1}
@@ -42,7 +42,7 @@ export default function Conversations({
               })}
             </div>
             <button
-              className="btn btn-neutral mt-4 align-middle"
+              className="btn mt-4 align-middle"
               onClick={createConversation}
             >
               New conversation
@@ -51,7 +51,7 @@ export default function Conversations({
         </ul>
       </div>
       <div className="drawer-content max-h-screen w-full items-center justify-center">
-        <div className="bg-blur fixed top-0 z-10 h-14 w-full">
+        <div className="fixed top-0 z-10 h-14 w-full bg-gradient-to-b from-60% from-base-100">
           <label
             htmlFor="my-drawer"
             className="btn btn-ghost drawer-button m-2 w-fit lg:invisible"

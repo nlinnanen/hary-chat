@@ -1,12 +1,11 @@
-import React, { useState } from "react";
-import { useMutation, useQuery } from "react-query";
-import Conversations from "./Conversations";
-import axios from "axios";
-import Login from "./Login";
 import useHary from "@hooks/useHary";
 import { getPrivateKey } from "@utils/crypto/keys";
-import { getConversations } from "src/api/conversation/conversation";
-import NoHaryKey from "./Noharykey";
+import axios from "axios";
+import { useState } from "react";
+import { useQuery } from "react-query";
+import Conversations from "./Conversations";
+import Login from "./Login";
+import NoHaryKey from "./NoHaryKey";
 
 const getHaryPrivateKey = async () => {
   const data = await getPrivateKey("hary");
@@ -16,10 +15,16 @@ const getHaryPrivateKey = async () => {
 export default function Hary() {
   const [, setIsAuthenticated] = useState(false);
   const { data, isLoading } = useQuery("haryPrivateKey", getHaryPrivateKey);
+  const { currentHary } = useHary();
 
   const getConversationIds = async () => {
-    const data = await getConversations();
-    return data.data.data?.map((conversation) => conversation.attributes?.uuid) ?? [];
+    const ids =
+      (currentHary?.conversations?.data
+        ?.map((e) => e?.attributes?.uuid)
+        .filter((e) => e) as unknown as string[]) ?? [];
+    console.log(currentHary?.conversations?.data)
+    console.log(ids);
+    return ids;
   };
 
   if (!axios.defaults.headers.common["Authorization"]) {
@@ -31,18 +36,15 @@ export default function Hary() {
     }
   }
 
-  if (isLoading) return (
-    <span className="loading loading-ring loading-lg"></span>
-  );
+  if (isLoading)
+    return <span className="loading loading-ring loading-lg"></span>;
 
-  if (!data) return (
-    <NoHaryKey />
-  )
-  
+  if (!data) return <NoHaryKey />;
+
   return (
-      <Conversations
-        getConversationIds={getConversationIds}
-        databaseKey={"hary"}
-      />
+    <Conversations
+      getConversationIds={getConversationIds}
+      databaseKey={"hary"}
+    />
   );
 }

@@ -1,16 +1,17 @@
-import { useMemo } from "react";
-import useHary from "./useHary";
+import { getUserId } from "@utils/crypto/keys";
 import { decryptText } from "@utils/crypto/messages";
-import { ConversationFrontend, MessageFrontend } from "src/types";
-import { useQuery } from "react-query";
-import { getConversationsId } from "src/api/conversation/conversation";
 import axios from "axios";
+import { useMemo } from "react";
+import { useQuery } from "react-query";
 import { Message } from "src/api/documentation.schemas";
+import { ConversationFrontend, MessageFrontend } from "src/types";
+import useHary from "./useHary";
 
 const queryConversation = async (
   conversationId: string,
   currentHaryPk: string | undefined,
-  dataBaseKey: string
+  dataBaseKey: string,
+  deviceId: string | undefined
 ): Promise<ConversationFrontend> => {
   const {data: conversation} = await axios.get(`/conversation-by-pk/${conversationId}`)
   const encryptedMessages = conversation.messages;
@@ -19,9 +20,11 @@ const queryConversation = async (
       ? currentHaryPk!
       : conversation.publicKey;
 
-  if (!myPublicKey) {
-    throw new Error("No public key found!");
+  if (!myPublicKey || !deviceId) {
+    console.log(deviceId, myPublicKey)
+    throw new Error("No public key or device id found!");
   }
+
 
   const messages = await Promise.all(
     encryptedMessages?.map(
@@ -30,7 +33,8 @@ const queryConversation = async (
         const content = await decryptText(
           message.content,
           dataBaseKey,
-          message.sender
+          message.sender,
+          deviceId
         );
         return {
           timestamp: new Date(message.createdAt ?? ""),
@@ -55,13 +59,14 @@ export default function useConversation(
   dataBaseKey: string,
 ) {
   const { isLoading: harysLoading, currentHary } = useHary();
-
+  const { data: deviceId } = useQuery(["deviceId", conversationId], () => getUserId())
   const { data, refetch, isLoading, isRefetching } = useQuery(
     ['conversation', conversationId, currentHary, dataBaseKey],
-    () => queryConversation(conversationId, currentHary?.publicKey, dataBaseKey),
+    () => queryConversation(conversationId, currentHary?.publicKey, dataBaseKey, deviceId),
     {
       refetchIntervalInBackground: true,
       refetchInterval: 1000,
+      enabled: !!deviceId
     }
   );
   // Use memo to prevent unnecessary re-renders
@@ -82,5 +87,6 @@ export default function useConversation(
     refetch,
     conversationLoading: isLoading || harysLoading,
     conversationRefetching: isRefetching,
+    deviceId
   };
 }

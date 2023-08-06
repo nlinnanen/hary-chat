@@ -42,6 +42,8 @@
   - [ ] Prevent xss
   - [ ] Validate sender public key is hary
   - [ ] Passphrases
+  - [ ] Use https
+  - [ ] PREVENT UPDATE OF HARY PUBLIC KEY
 - [ ] Refactor
   - [x] Get hary by user id
   - [ ] Reusable ui elements

@@ -75,7 +75,7 @@ function Conversation({ databaseKey }: { databaseKey?: string }) {
         {getMessageList()}
         <div ref={chatRef} />
       </div>
-      <div className="fixed bottom-0 flex w-full h-30 items-end space-x-2 p-5 bg-blur-reverse z-20">
+      <div className="fixed bottom-0 flex w-full h-30 items-end space-x-2 p-5 z-20 bg-gradient-to-t from-60% from-base-100">
         <input
           type="text"
           className="input input-bordered flex-grow"

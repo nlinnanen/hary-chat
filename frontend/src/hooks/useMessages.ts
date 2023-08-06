@@ -22,6 +22,7 @@ export default function useMessages(
     currentHary,
     conversation,
     conversationDbId,
+    deviceId
   } = useConversation(conversationId, dataBaseKey);
   const { mutate: updateConversation } = usePutConversationsId();
   const { mutate: sendMessage, isLoading: isSendMessageLoading } =
@@ -43,7 +44,8 @@ export default function useMessages(
       const content = await encryptText(
         newMessage,
         [...conversationHaryPublicKeys, publicKey],
-        dataBaseKey
+        dataBaseKey,
+        deviceId!
       );
       sendMessage(
         {
@@ -52,7 +54,7 @@ export default function useMessages(
               content,
               sender: myPublicKey,
               conversation: conversationDbId,
-            },
+            }
           },
         },
         {
