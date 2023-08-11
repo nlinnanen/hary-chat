@@ -4,11 +4,13 @@
 - [ ] Startup questions
 - [ ] Passphrases
 - [ ] PWA
+- [ ] Internationalization
 - [ ] UI fixes:
   - [x] Create conversation button in menu
   - [x] Overflow in create conv viewBox
   - [ ] Prodeko colors?
   - [ ] Prodeko logo
+  - [ ] Remove create conv from hary
   - [x] Empty conv message not centered
   - [x] Input not bottom on phone screen
 - [ ] Deployment
@@ -49,3 +51,11 @@
   - [ ] Reusable ui elements
   - [ ] Seperate logic and ui
   - [ ] Better handle hary private keys
+- [ ] Docs
+  - [ ] Architecture
+  - [ ] Privacy
+  - [ ] Security
+  - [ ] End user instructions
+  - [ ] Hary instructions
+  - [ ] VPJ instructions
+  - [ ] Developer instructions

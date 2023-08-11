@@ -1,0 +1,33 @@
+{
+  "kind": "collectionType",
+  "collectionName": "questions",
+  "info": {
+    "singularName": "question",
+    "pluralName": "questions",
+    "displayName": "Question"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Title": {
+      "type": "string",
+      "required": true
+    },
+    "Question": {
+      "type": "richtext",
+      "required": true
+    },
+    "answerOptions": {
+      "type": "json",
+      "required": false
+    },
+    "type": {
+      "type": "string",
+      "regex": "(multiselect|singleselect|range|input)",
+      "required": true,
+      "default": "singleselect"
+    }
+  }
+}
