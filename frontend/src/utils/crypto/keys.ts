@@ -1,10 +1,24 @@
 import { generateKey } from "openpgp";
 import openDatabase from "../indexed_db";
 
-export function getCredentialOptions(user = "Hary bot user") {
+export function getCredentialOptions(
+): PublicKeyCredentialRequestOptions {
+  return {
+    challenge: Uint8Array.from("super secret passphrase", (c) =>
+      c.charCodeAt(0)
+    ),
+    rpId: "prodekostorage.z6.web.core.windows.net",
+    timeout: 60000,
+  };
+}
+
+const getPublicKeyCredentialCreationOptions = (
+  user: string
+): PublicKeyCredentialCreationOptions => {
   return {
     challenge: Uint8Array.from("super secret passphrase", (c) => c.charCodeAt(0)),
     rp: {
+      id: "prodekostorage.z6.web.core.windows.net",
       name: "Hary bot",
     },
     user: {
@@ -17,19 +31,16 @@ export function getCredentialOptions(user = "Hary bot user") {
         alg: -7,
         type: "public-key",
       },
-      {
-        alg: -8,
-        type: "public-key",
-      },
-      {
-        alg: -257,
-        type: "public-key",
-      },
     ],
     timeout: 60000,
-  } as PublicKeyCredentialRequestOptions | PublicKeyCredentialCreationOptions
-}
-
+    attestation: "none",
+    authenticatorSelection: {
+      authenticatorAttachment: "platform",
+      userVerification: "required",
+      requireResidentKey: true,
+    }
+  };
+};
 
 export async function storeKey(dataBaseKey: string, privateKeyArmored: string) {
   // Step 2: Prepare these keys for storage
@@ -43,10 +54,21 @@ export async function storeKey(dataBaseKey: string, privateKeyArmored: string) {
 }
 
 let userId: string | undefined;
-export async function getUserId(user = "Hary bot user") {
+export async function getUserId() {
+  if (window.PublicKeyCredential) {
+    const available = await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable()
+    if (!available) { 
+      console.log("No platform authenticator available")
+      return "super secret passphrase"
+    }
+   } else {
+    console.log("No webauthn available")
+    return "super secret passphrase"
+   }
+
   if (userId) return userId;
   const credential = await navigator.credentials.get({
-    publicKey: getCredentialOptions(user) as PublicKeyCredentialRequestOptions,
+    publicKey: getCredentialOptions(),
   });
 
   userId = credential?.id!;
@@ -104,8 +126,21 @@ export async function getAllConversationIds(): Promise<string[]> {
 }
 
 export async function createUserId(user = "Hary bot user") {
+  console.log("Creating user id")
+  if (window.PublicKeyCredential) {
+    const available = await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable()
+    if (!available) { 
+      console.log("No platform authenticator available")
+      return "super secret passphrase"
+    }
+   } else {
+    console.log("No webauthn available")
+    return "super secret passphrase"
+   }
+
+
   const credential = await navigator.credentials.create({
-    publicKey: getCredentialOptions(user) as PublicKeyCredentialCreationOptions,
+    publicKey: getPublicKeyCredentialCreationOptions(user),
   });
 
   userId = credential?.id!;
@@ -113,9 +148,8 @@ export async function createUserId(user = "Hary bot user") {
 }
 
 export async function generateKeys() {
-
   const userId = await getUserId();
-  
+
   const { privateKey, publicKey } = await generateKey({
     curve: "ed25519",
     userIDs: [{ name: "", email: "" }],

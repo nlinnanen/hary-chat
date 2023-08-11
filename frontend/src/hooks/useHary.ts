@@ -1,4 +1,4 @@
-import { createUserId, generateKeys, getUserId, storeKey } from "@utils/crypto/keys";
+import { createUserId, generateKeys, storeKey } from "@utils/crypto/keys";
 import { useGetHarys, usePostHarys } from "src/api/hary/hary";
 
 export default function useHary() {
