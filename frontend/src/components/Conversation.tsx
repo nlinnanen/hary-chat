@@ -22,7 +22,7 @@ function Conversation({ databaseKey }: { databaseKey?: string }) {
     useGetConversationPage();
 
   useEffect(() => {
-    chatRef.current?.scrollIntoView({ behavior: "instant" });
+    chatRef.current?.scrollIntoView();
   }, [conversationId]);
 
   const isLoading = conversationLoading || pageDataLoading;

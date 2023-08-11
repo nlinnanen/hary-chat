@@ -41,12 +41,14 @@ export default function Conversations({
                 );
               })}
             </div>
-            <button
-              className="btn mt-4 align-middle"
-              onClick={createConversation}
-            >
-              New conversation
-            </button>
+            {databaseKey != "hary" && (
+              <button
+                className="btn mt-4 align-middle"
+                onClick={createConversation}
+              >
+                New conversation
+              </button>
+            )}
           </div>
         </ul>
       </div>
@@ -62,13 +64,10 @@ export default function Conversations({
         {conversationId ? (
           <Conversation databaseKey={databaseKey} />
         ) : (
-          <div className="flex h-full flex-col items-center justify-center space-y-10 text-center">
+          <div className="flex h-full items-center justify-center space-y-10 text-center">
             <div className="w-2/3">
               Create or select a conversation from the menu to start messaging
             </div>
-            <button className="btn btn-primary" onClick={createConversation}>
-              Start a conversation
-            </button>
           </div>
         )}
       </div>
