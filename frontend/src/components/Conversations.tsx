@@ -1,6 +1,7 @@
 import Conversation from "@components/Conversation";
 import useConversations from "@hooks/useConversations";
 import { RxHamburgerMenu } from "react-icons/rx";
+import HarySelection from "./HarySelection";
 
 export default function Conversations({
   getConversationIds,
@@ -64,10 +65,8 @@ export default function Conversations({
         {conversationId ? (
           <Conversation databaseKey={databaseKey} />
         ) : (
-          <div className="flex h-full items-center justify-center space-y-10 text-center">
-            <div className="w-2/3">
-              Create or select a conversation from the menu to start messaging
-            </div>
+          <div className="flex h-full w-full items-center justify-center">
+            <HarySelection />
           </div>
         )}
       </div>
