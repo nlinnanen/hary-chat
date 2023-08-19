@@ -1,55 +1,67 @@
 import useHary from "@hooks/useHary";
-import { useState } from "react";
-import { HaryUser } from "src/api/documentation.schemas";
+import { Dispatch, SetStateAction, useState } from "react";
+import {
+  HaryListResponseDataItem,
+  HaryUser,
+} from "src/api/documentation.schemas";
+import HaryAvatar from "./HaryAvatar";
 
-const HarySelection = () => {
+interface Props {
+  setSelectedHarys: Dispatch<SetStateAction<HaryListResponseDataItem[]>>;
+}
+
+const HarySelection = ({ setSelectedHarys }: Props) => {
   const { harys, isLoading } = useHary();
-  const [selectedHarys, setSelectedHarys] = useState<HaryUser[]>([]);
 
-  const handleSelect = (hary: HaryUser) => {
-    if (selectedHarys.includes(hary)) {
-      setSelectedHarys((prev: HaryUser[]) => prev.filter((e) => e !== hary));
-    } else {
-      setSelectedHarys((prev: HaryUser[]) => [...prev, hary]);
-    }
-  }
-
-  const users = harys?.map((hary) => hary.attributes?.user!);
-
-  const getPicUrl = (hary: HaryUser) => hary?.data?.attributes?.picture?.data?.attributes?.url
+  const handleSelect = (hary: HaryListResponseDataItem) => {
+    setSelectedHarys((prev: HaryListResponseDataItem[]) => {
+      if (prev.includes(hary)) {
+        return prev.filter((e) => e !== hary);
+      } else {
+        return [...prev, hary];
+      }
+    });
+  };
 
   if (isLoading)
     return <span className="loading loading-ring loading-lg"></span>;
 
   return (
-    <div className="md:w-[60vw] w-[90vw] rounded-xl bg-base-200">
-      {users?.map((hary, i) => (
-        <>
-          <div className="flex items-center py-1 px-2 md:py-4 md:px-6">
-            <div className="collapse">
-              <input type="checkbox" />
-              <div className="collapse-title md:text-xl text-lg font-medium flex items-center p-0">
-                <div className="avatar placeholder mr-6">
-                  <div className="md:w-16 w-12 rounded-full bg-neutral-focus text-neutral-content">
-                    {
-                      getPicUrl(hary) ? <img src={import.meta.env.VITE_APP_BASE_URL + getPicUrl(hary)} alt="avatar" /> :
-                    <span className="md:text-3xl text-lg">
-                      {(hary.data?.attributes?.firstName?.[0] ?? '') + (hary.data?.attributes?.lastName?.[0] ?? '')}
-                    </span>
-                    }
+    <div className="w-[90vw] rounded-xl bg-base-200 md:w-[60vw]">
+      {harys?.map((hary, i) => {
+        const haryUser = hary.attributes?.user!;
+        return (
+          <div key={hary.id}>
+            <div className="flex items-center px-2 py-1 md:px-6 md:py-4">
+              <div className="collapse collapse-arrow">
+                <input type="checkbox" />
+                <div className="collapse-title flex items-center p-0 text-lg font-medium md:text-xl">
+                  <div className="avatar placeholder mr-6">
+                    <div className="w-12 rounded-full bg-neutral-focus text-neutral-content md:w-16">
+                      <HaryAvatar haryId={hary.id!} />
+                    </div>
                   </div>
+                  {haryUser.data?.attributes?.firstName}{" "}
+                  {haryUser.data?.attributes?.lastName}
                 </div>
-                {hary.data?.attributes?.firstName} {hary.data?.attributes?.lastName}
+                <div className="collapse-content p-0">
+                  <p className="break-words pl-1">
+                    {haryUser.data?.attributes?.description}
+                  </p>
+                </div>
               </div>
-              <div className="collapse-content p-0">
-                <p className="break-words pl-1">{hary.data?.attributes?.description}</p>
-              </div>
+              <input
+                type="checkbox"
+                className="checkbox mx-2"
+                onChange={() => handleSelect(hary)}
+              />
             </div>
-            <input type="checkbox" className="checkbox mx-2" onChange={() => handleSelect(hary)}/>
+            {i < harys.length - 1 && (
+              <div className="divider m-0 -my-2 p-0"></div>
+            )}
           </div>
-          {i < users.length - 1 && <div className="divider p-0 m-0 -my-2"></div>}
-        </>
-      ))}
+        );
+      })}
     </div>
   );
 };

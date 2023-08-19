@@ -18,11 +18,12 @@ export default function Hary() {
   const { currentHary } = useHary();
 
   const getConversationIds = async () => {
+    console.log(currentHary)
     const ids =
-      (currentHary?.conversations?.data
+      (currentHary?.attributes?.conversations?.data
         ?.map((e) => e?.attributes?.uuid)
         .filter((e) => e) as unknown as string[]) ?? [];
-    console.log(currentHary?.conversations?.data)
+    console.log(currentHary?.attributes?.conversations?.data)
     console.log(ids);
     return ids;
   };

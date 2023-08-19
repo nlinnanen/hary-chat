@@ -29,7 +29,7 @@ export default function Login({
           localStorage.setItem("authToken", jwt || "");
           localStorage.setItem(
             "userId",
-            response.data.user?.id?.toString() || ""
+            response.data.user!.id!.toString() || ""
           );
           setIsAuthenticated(true);
         },

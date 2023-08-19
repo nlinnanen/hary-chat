@@ -1,13 +1,14 @@
 import { generateKey } from "openpgp";
 import openDatabase from "../indexed_db";
 
+
 export function getCredentialOptions(
 ): PublicKeyCredentialRequestOptions {
   return {
     challenge: Uint8Array.from("super secret passphrase", (c) =>
       c.charCodeAt(0)
     ),
-    rpId: "prodekostorage.z6.web.core.windows.net",
+    rpId: undefined,
     timeout: 60000,
   };
 }
@@ -18,7 +19,7 @@ const getPublicKeyCredentialCreationOptions = (
   return {
     challenge: Uint8Array.from("super secret passphrase", (c) => c.charCodeAt(0)),
     rp: {
-      id: "prodekostorage.z6.web.core.windows.net",
+      id: undefined,
       name: "Hary bot",
     },
     user: {

@@ -1,7 +1,7 @@
 import Conversation from "@components/Conversation";
 import useConversations from "@hooks/useConversations";
 import { RxHamburgerMenu } from "react-icons/rx";
-import HarySelection from "./HarySelection";
+import NewConversation from "./NewConversation";
 
 export default function Conversations({
   getConversationIds,
@@ -15,6 +15,7 @@ export default function Conversations({
     conversationIds,
     setConversationId,
     newConversation,
+    createConversation
   } = useConversations(getConversationIds);
 
   if (!conversationIds) return null;
@@ -68,15 +69,13 @@ export default function Conversations({
         </div>
         {conversationId ? (
           conversationId === "new" ? (
-            <div className="flex h-full w-full items-center justify-center">
-              <HarySelection />
-            </div>
+              <NewConversation createConversation={createConversation} />
           ) : (
             <Conversation databaseKey={databaseKey} />
           )
         ) : (
-          <div className="flex h-full w-full items-center justify-center">
-            No conversation selected
+          <div className="flex h-full w-full items-center justify-center text-center">
+            No conversation selected! <br></br> Select a conversation from the menu or create a new one
           </div>
         )}
       </div>

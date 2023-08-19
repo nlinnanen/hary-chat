@@ -9,7 +9,8 @@ import { ConversationFrontend } from "src/types";
 export default function useMessages(
   conversationId: string,
   dataBaseKey: string = conversationId,
-  chatRef: React.RefObject<HTMLDivElement>
+  chatRef: React.RefObject<HTMLDivElement>,
+  areaRef: React.RefObject<HTMLTextAreaElement>
 ) {
   const [newMessage, setNewMessage] = useState<string>("");
   const {
@@ -72,6 +73,7 @@ export default function useMessages(
                       content: newMessage,
                       timestamp: new Date(createdMessage.createdAt!),
                       sentByMe: true,
+                      sender: currentHary?.id! ?? "user",
                     },
                   ],
                 };
@@ -81,6 +83,8 @@ export default function useMessages(
           },
         }
       );
+      // @ts-ignore
+      areaRef.current.style.height = "inherit";
       setNewMessage("");
     } else {
       alert("There was a problem sending your message! Please try again");

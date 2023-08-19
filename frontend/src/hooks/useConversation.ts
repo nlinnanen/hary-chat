@@ -5,14 +5,15 @@ import { ConversationFrontend, MessageFrontend } from "src/types";
 import { useQuery } from "react-query";
 import { getConversationsId } from "src/api/conversation/conversation";
 import axios from "axios";
-import { Message } from "src/api/documentation.schemas";
+import { HaryListResponseDataItem, Message } from "src/api/documentation.schemas";
 import { getUserId } from "@utils/crypto/keys";
 
 const queryConversation = async (
   conversationId: string,
   currentHaryPk: string | undefined,
   dataBaseKey: string,
-  deviceId: string | undefined
+  deviceId: string | undefined,
+  harys: HaryListResponseDataItem[] | undefined
 ): Promise<ConversationFrontend> => {
   const {data: conversation} = await axios.get(`/conversation-by-pk/${conversationId}`)
   const encryptedMessages = conversation.messages;
@@ -41,6 +42,7 @@ const queryConversation = async (
           timestamp: new Date(message.createdAt ?? ""),
           content: content ?? "",
           sentByMe: message.sender === myPublicKey,
+          sender: harys?.find((hary) => hary.attributes?.publicKey === message.sender)?.id ?? "user"
         };
       }
     ) ?? []
@@ -59,14 +61,14 @@ export default function useConversation(
   conversationId: string,
   dataBaseKey: string,
 ) {
-  const { isLoading: harysLoading, currentHary } = useHary();
+  const { isLoading: harysLoading, currentHary, harys } = useHary();
   const { data: deviceId } = useQuery(["deviceId", conversationId], () => getUserId())
   const { data, refetch, isLoading, isRefetching } = useQuery(
     ['conversation', conversationId, currentHary, dataBaseKey],
-    () => queryConversation(conversationId, currentHary?.publicKey, dataBaseKey, deviceId),
+    () => queryConversation(conversationId, currentHary?.attributes?.publicKey, dataBaseKey, deviceId, harys),
     {
       refetchIntervalInBackground: true,
-      refetchInterval: 1000,
+      refetchInterval: 10_000,
       enabled: !!deviceId
     }
   );
