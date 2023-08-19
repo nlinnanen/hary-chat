@@ -11,10 +11,10 @@ export default function Conversations({
   databaseKey?: string;
 }) {
   const {
-    createConversation,
     conversationId,
     conversationIds,
     setConversationId,
+    newConversation,
   } = useConversations(getConversationIds);
 
   if (!conversationIds) return null;
@@ -25,7 +25,7 @@ export default function Conversations({
       <div className="drawer-side z-30">
         <label htmlFor="my-drawer" className="drawer-overlay"></label>
         <ul className="menu h-full w-80 bg-base-200 p-4 text-lg">
-          <div className="justify-between flex h-full flex-col">
+          <div className="flex h-full flex-col justify-between">
             <div>
               {conversationIds.map((id, index) => {
                 if (!id) return null;
@@ -33,7 +33,11 @@ export default function Conversations({
                 return (
                   <li
                     key={id}
-                    className={isSelected ? "rounded-lg bg-neutral text-neutral-content" : ""}
+                    className={
+                      isSelected
+                        ? "rounded-lg bg-neutral text-neutral-content"
+                        : ""
+                    }
                   >
                     <a onClick={() => setConversationId(id)}>
                       Conversation {index + 1}
@@ -45,7 +49,7 @@ export default function Conversations({
             {databaseKey != "hary" && (
               <button
                 className="btn mt-4 align-middle"
-                onClick={createConversation}
+                onClick={newConversation}
               >
                 New conversation
               </button>
@@ -54,7 +58,7 @@ export default function Conversations({
         </ul>
       </div>
       <div className="drawer-content max-h-screen w-full items-center justify-center">
-        <div className="fixed top-0 z-10 h-14 w-full bg-gradient-to-b from-60% from-base-100">
+        <div className="fixed top-0 z-10 h-14 w-full bg-gradient-to-b from-base-100 from-60%">
           <label
             htmlFor="my-drawer"
             className="btn btn-ghost drawer-button m-2 w-fit lg:invisible"
@@ -63,10 +67,16 @@ export default function Conversations({
           </label>
         </div>
         {conversationId ? (
-          <Conversation databaseKey={databaseKey} />
+          conversationId === "new" ? (
+            <div className="flex h-full w-full items-center justify-center">
+              <HarySelection />
+            </div>
+          ) : (
+            <Conversation databaseKey={databaseKey} />
+          )
         ) : (
           <div className="flex h-full w-full items-center justify-center">
-            <HarySelection />
+            No conversation selected
           </div>
         )}
       </div>

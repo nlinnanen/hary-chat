@@ -26,6 +26,10 @@ export default function useConversations(
     }
   };
 
+  const newConversation = () => {
+    navigate("conversation/new", { replace: true });
+  }
+
   const createConversation = async () => {
     if (!harys) return console.error("harys not loaded");
     if (conversationIds?.length === 0) await createUserId();
@@ -59,5 +63,6 @@ export default function useConversations(
     conversationId,
     setConversationId,
     createConversation,
+    newConversation
   };
 }
