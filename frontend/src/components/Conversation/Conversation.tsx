@@ -23,16 +23,11 @@ function Conversation({ databaseKey }: { databaseKey?: string }) {
 
   const { harysMap } = useHary();
 
-  const { data: pageData, isLoading: pageDataLoading } =
-    useGetConversationPage();
-
   useEffect(() => {
     chatRef.current?.scrollIntoView();
   }, [conversationId]);
 
-  const isLoading = conversationLoading || pageDataLoading;
-
-  
+  const isLoading = conversationLoading;
 
   if (isLoading)
     return (
@@ -44,7 +39,17 @@ function Conversation({ databaseKey }: { databaseKey?: string }) {
   return (
     <div className="flex h-full flex-col">
       <div className="flex h-full flex-col overflow-y-auto p-2 py-16">
-        <div>{}</div>
+        <div className="fixed top-0 z-10 h-16 flex justify-end pr-10 items-center bg-gradient-to-b from-base-100 from-60% w-full text-sm text-base-content font-semibold">
+          Conversation with&nbsp;
+          {conversation?.harys.map((h, i, a) => {
+            const hary = harysMap.get(h.id)?.user?.data?.attributes;
+            return (
+              <span>
+                {hary?.firstName} {hary?.lastName}{i !== a.length - 1 && <>,&nbsp;</>}
+              </span>
+            );
+          })}
+        </div>
         <MessageList messages={messages} harysMap={harysMap} />
         <div ref={chatRef} />
       </div>

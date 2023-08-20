@@ -25,7 +25,6 @@ export default function useMessages(
     conversationDbId,
     deviceId
   } = useConversation(conversationId, dataBaseKey);
-  const { mutate: updateConversation } = usePutConversationsId();
   const { mutate: sendMessage, isLoading: isSendMessageLoading } =
     usePostMessages();
   const queryClient = useQueryClient();

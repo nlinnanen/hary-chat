@@ -1,4 +1,4 @@
-import { Conversation } from "./api/documentation.schemas";
+import { Conversation, Hary } from "./api/documentation.schemas";
 
 export interface MessageFrontend {
   content: string;
@@ -11,6 +11,9 @@ export interface ConversationFrontend {
   messages: MessageFrontend[];
   myPublicKey: string;
   publicKey: string;
-  conversation: any;
+  conversation: Conversation & {
+    messages: undefined;
+    harys: Array<Hary & { id: number }>;
+  };
   conversationDbId: number;
 }

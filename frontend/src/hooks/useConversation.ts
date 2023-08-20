@@ -1,12 +1,11 @@
-import { useMemo } from "react";
-import useHary from "./useHary";
-import { decryptText } from "@utils/crypto/messages";
-import { ConversationFrontend, MessageFrontend } from "src/types";
-import { useQuery } from "react-query";
-import { getConversationsId } from "src/api/conversation/conversation";
-import axios from "axios";
-import { HaryListResponseDataItem, Message } from "src/api/documentation.schemas";
 import { getUserId } from "@utils/crypto/keys";
+import { decryptText } from "@utils/crypto/messages";
+import axios from "axios";
+import { useMemo } from "react";
+import { useQuery } from "react-query";
+import { HaryListResponseDataItem, Message } from "src/api/documentation.schemas";
+import { ConversationFrontend, MessageFrontend } from "src/types";
+import useHary from "./useHary";
 
 const queryConversation = async (
   conversationId: string,

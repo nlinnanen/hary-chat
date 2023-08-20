@@ -35,7 +35,7 @@ export default function Conversations({
         />
       </div>
       <div className="drawer-content max-h-screen items-center justify-center">
-        <div className="fixed top-0 z-10 h-14 bg-gradient-to-b from-base-100 from-60%">
+        <div className="fixed top-0 z-20 h-16 flex items-center bg-gradient-to-b from-base-100 from-60%">
           <label
             htmlFor="my-drawer"
             className="btn btn-ghost drawer-button m-2 w-fit lg:invisible"

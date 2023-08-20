@@ -9,7 +9,7 @@
 - [ ] UI fixes:
   - [x] Create conversation button in menu
   - [x] Overflow in create conv viewBox
-  - [ ] Show harys in conversation header
+  - [x] Show harys in conversation header
   - [ ] Prodeko colors?
   - [ ] Prodeko logo
   - [x] Remove create conv from hary
