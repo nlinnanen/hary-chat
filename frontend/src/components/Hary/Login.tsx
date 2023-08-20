@@ -1,6 +1,6 @@
 import axios from "axios";
 import { usePostAuthLocal } from "src/api/users-permissions-auth/users-permissions-auth";
-import Warning from "./Warning";
+import Warning from "../Warning";
 
 export default function Login({
   setIsAuthenticated,

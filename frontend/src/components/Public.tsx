@@ -1,6 +1,6 @@
 import { getAllConversationIds } from "@utils/crypto/keys";
-import Conversations from "./Conversations";
 import { useEffect } from "react";
+import Conversations from "./Conversation/Conversations";
 
 export default function Public() {
     useEffect(() => {

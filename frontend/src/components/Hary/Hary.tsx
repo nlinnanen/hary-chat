@@ -3,7 +3,7 @@ import { getPrivateKey } from "@utils/crypto/keys";
 import axios from "axios";
 import { useState } from "react";
 import { useQuery } from "react-query";
-import Conversations from "./Conversations";
+import Conversations from "../Conversation/Conversations";
 import Login from "./Login";
 import NoHaryKey from "./NoHaryKey";
 

@@ -32,6 +32,14 @@ const getPublicKeyCredentialCreationOptions = (
         alg: -7,
         type: "public-key",
       },
+      {
+        alg: -8,
+        type: "public-key",
+      },
+      {
+        alg: -257,
+        type: "public-key",
+      },
     ],
     timeout: 60000,
     attestation: "none",

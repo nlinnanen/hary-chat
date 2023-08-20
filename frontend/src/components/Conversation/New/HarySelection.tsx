@@ -1,10 +1,10 @@
+import HaryAvatar from "@components/Hary/HaryAvatar";
 import useHary from "@hooks/useHary";
 import { Dispatch, SetStateAction, useState } from "react";
 import {
   HaryListResponseDataItem,
   HaryUser,
 } from "src/api/documentation.schemas";
-import HaryAvatar from "./HaryAvatar";
 
 interface Props {
   setSelectedHarys: Dispatch<SetStateAction<HaryListResponseDataItem[]>>;

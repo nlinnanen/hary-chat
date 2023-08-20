@@ -1,16 +1,18 @@
 # Todo
 
-- [ ] Fix incrementing ids
+- [x] Fix incrementing ids
 - [ ] Startup questions
 - [ ] Passphrases
 - [ ] PWA
 - [ ] Internationalization
+- [x] Ctrl + enter to send
 - [ ] UI fixes:
   - [x] Create conversation button in menu
   - [x] Overflow in create conv viewBox
+  - [ ] Show harys in conversation header
   - [ ] Prodeko colors?
   - [ ] Prodeko logo
-  - [ ] Remove create conv from hary
+  - [x] Remove create conv from hary
   - [x] Empty conv message not centered
   - [x] Input not bottom on phone screen
 - [ ] Deployment

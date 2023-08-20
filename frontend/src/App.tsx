@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import Conversations from "./components/Conversations";
 import { Route, Router, Routes } from "react-router-dom";
 import Public from "@components/Public";
-import Hary from "@components/Hary";
+import Hary from "@components/Hary/Hary";
 
 const queryClient = new QueryClient();
 

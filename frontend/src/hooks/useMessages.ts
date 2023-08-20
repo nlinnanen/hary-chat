@@ -83,8 +83,12 @@ export default function useMessages(
           },
         }
       );
-      // @ts-ignore
-      areaRef.current.style.height = "inherit";
+      try {
+        // @ts-expect-error
+        areaRef.current.style.height = "inherit";
+      } catch (e) {
+        console.log(e)
+      }
       setNewMessage("");
     } else {
       alert("There was a problem sending your message! Please try again");
@@ -93,6 +97,7 @@ export default function useMessages(
 
   return {
     messages,
+    conversation,
     newMessage,
     setNewMessage,
     handleSendMessage,

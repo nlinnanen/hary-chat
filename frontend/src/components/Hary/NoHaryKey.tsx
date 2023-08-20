@@ -4,7 +4,7 @@ const NoHaryKey = () => {
   const userId = parseInt(localStorage.getItem("userId")!);
   const { createHary, currentHary } = useHary();
 
-  const publicKeyExists = currentHary?.publicKey !== undefined;
+  const publicKeyExists = currentHary?.attributes?.publicKey !== undefined;
 
   return (
     <div className="flex h-screen flex-col items-center justify-center text-center">
