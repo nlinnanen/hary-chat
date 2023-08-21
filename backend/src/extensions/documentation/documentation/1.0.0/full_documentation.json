@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2023-08-17T08:27:27.919Z"
+    "x-generation-date": "2023-08-20T11:43:50.672Z"
   },
   "x-strapi-config": {
     "path": "/documentation",
@@ -1114,6 +1114,9 @@
                                                                     }
                                                                   }
                                                                 }
+                                                              },
+                                                              "telegramChatId": {
+                                                                "type": "string"
                                                               },
                                                               "createdAt": {
                                                                 "type": "string",
@@ -3034,6 +3037,9 @@
                           }
                         }
                       },
+                      "telegramChatId": {
+                        "type": "string"
+                      },
                       "createdAt": {
                         "type": "string",
                         "format": "date-time"
@@ -4242,6 +4248,9 @@
                                                       }
                                                     }
                                                   }
+                                                },
+                                                "telegramChatId": {
+                                                  "type": "string"
                                                 },
                                                 "createdAt": {
                                                   "type": "string",

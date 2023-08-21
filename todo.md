@@ -1,41 +1,9 @@
 # Todo
 
-- [x] Fix incrementing ids
+## Launch
+
+- [ ] Telegram integration
 - [ ] Startup questions
-- [ ] Passphrases
-- [ ] PWA
-- [ ] Internationalization
-- [x] Ctrl + enter to send
-- [ ] UI fixes:
-  - [x] Create conversation button in menu
-  - [x] Overflow in create conv viewBox
-  - [x] Show harys in conversation header
-  - [ ] Prodeko colors?
-  - [ ] Prodeko logo
-  - [x] Remove create conv from hary
-  - [x] Empty conv message not centered
-  - [x] Input not bottom on phone screen
-- [ ] Deployment
-  - [x] Containerize backend
-  - [x] Build script
-  - [ ] Provision azure resources
-  - [ ] Deploy to azure
-  - [ ] CI/CD for a prod branch
-  - [ ] Performance testing
-- [ ] Dev environment
-  - [ ] DB conf
-  - [ ] Dev containers?
-  - [ ] Readme with startup instructions
-  - [ ] Create test data and users
-  - [ ] Monorepo?
-- [ ] Testing
-  - [ ] Unit tests for crypto operations
-  - [ ] E2e for critical ops
-- [ ] Features:
-  - [ ] Manage all texts trough strapi
-  - [ ] Telegram integration
-  - [ ] Sharing private keys to another device
-  - [ ] "Tapahtumahäry": time based usage
 - [ ] Security
   - [ ] Research most secure algorithm
   - [ ] Research open pgp protocol
@@ -48,6 +16,44 @@
   - [ ] Passphrases
   - [ ] Use https
   - [ ] PREVENT UPDATE OF HARY PUBLIC KEY
+  - [ ] CORS
+- [ ] Deployment
+  - [x] Containerize backend
+  - [x] Build script
+  - [ ] Provision azure resources
+  - [ ] Deploy to azure
+  - [ ] CI/CD for a prod branch
+  - [ ] Performance testing
+- [ ] UI fixes:
+  - [x] Create conversation button in menu
+  - [x] Overflow in create conv viewBox
+  - [x] Show harys in conversation header
+  - [ ] Prodeko colors?
+  - [ ] Prodeko logo
+  - [x] Remove create conv from hary
+  - [x] Empty conv message not centered
+  - [x] Input not bottom on phone screen
+
+## Overall
+
+- [x] Fix incrementing ids
+- [x] Passphrases
+- [ ] PWA
+- [ ] Internationalization
+- [x] Ctrl + enter to send
+- [ ] Dev environment
+  - [ ] DB conf
+  - [ ] Dev containers?
+  - [ ] Readme with startup instructions
+  - [ ] Create test data and users
+  - [ ] Monorepo?
+- [ ] Testing
+  - [ ] Unit tests for crypto operations
+  - [ ] E2e for critical ops
+- [ ] Features:
+  - [ ] Manage all texts trough strapi
+  - [ ] Sharing private keys to another device
+  - [ ] "Tapahtumahäry": time based usage
 - [ ] Refactor
   - [x] Get hary by user id
   - [ ] Reusable ui elements

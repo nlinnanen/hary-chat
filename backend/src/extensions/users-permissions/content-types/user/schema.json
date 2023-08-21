@@ -84,11 +84,15 @@
       "required": true
     },
     "picture": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images"
-      ],
-      "type": "media",
-      "multiple": false
+      ]
+    },
+    "telegramChatId": {
+      "type": "string"
     }
   }
 }
