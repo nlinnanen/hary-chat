@@ -61,7 +61,7 @@ export default function useMessages(
           onSuccess: (data) => {
             const createdMessage = data.data.data?.attributes!;
             queryClient.setQueryData(
-              ["conversation", conversationId, currentHary, dataBaseKey],
+              ["conversation", conversationId],
               (oldData: ConversationFrontend | undefined) => {
                 if (!oldData) throw new Error("No conversation data fetched!");
                 return {

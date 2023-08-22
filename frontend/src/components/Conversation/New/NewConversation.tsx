@@ -38,8 +38,8 @@ const NewConversation = ({ createConversation }: Props) => {
           isSendMessageLoading={false}
           value={newMessage}
           setNewMessage={setNewMessage}
-          ref={areaRef}
-          disabled={!newMessage}
+          areaRef={areaRef}
+          disabled={!selectedHarys.length}
         />
     </div>
   );

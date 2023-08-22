@@ -11,7 +11,7 @@ interface MessageProps {
 
 const Message: FunctionComponent<MessageProps> = ({ message, harysMap }) => {
   const senderIsHary = typeof message.sender === "number";
-  console.log(message.content);
+  
   return (
     <div
       key={message.timestamp.valueOf()}

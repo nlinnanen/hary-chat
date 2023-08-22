@@ -63,7 +63,7 @@ export default function useConversation(
   const { isLoading: harysLoading, currentHary, harys } = useHary();
   const { data: deviceId } = useQuery(["deviceId", conversationId], () => getUserId())
   const { data, refetch, isLoading, isRefetching } = useQuery(
-    ['conversation', conversationId, currentHary, dataBaseKey],
+    ['conversation', conversationId],
     () => queryConversation(conversationId, currentHary?.attributes?.publicKey, dataBaseKey, deviceId, harys),
     {
       refetchIntervalInBackground: true,

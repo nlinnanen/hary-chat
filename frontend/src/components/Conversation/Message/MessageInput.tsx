@@ -23,7 +23,7 @@ const MessageInput: FunctionComponent<MessageInputProps> = ({
     e
   ) => {
     if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
-      handleSendMessage().catch(console.error);
+      handleSendMessage();
     }
   };
 

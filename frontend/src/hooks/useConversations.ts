@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { usePostConversations } from "src/api/conversation/conversation";
 import {
@@ -16,15 +16,17 @@ import {
   HaryListResponseDataItem,
   HaryUser,
 } from "src/api/documentation.schemas";
+import { ConversationFrontend } from "src/types";
 
 export default function useConversations(
   getConversationIds: () => Promise<(string | undefined)[]>
 ) {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { conversationId } = useParams();
   const { mutate: mutateConversation } = usePostConversations();
   const { mutate: sendMessage } = usePostMessages();
-  const { harys, isLoading } = useHary();
+  const { harys, isLoading, currentHary } = useHary();
   const { data: conversationIds, refetch } = useQuery(
     "conversationIds",
     getConversationIds,
@@ -66,17 +68,18 @@ export default function useConversations(
       },
       {
         async onSuccess(data) {
-          const id = data.data.data?.attributes?.uuid;
-          if (!id) return console.error("no id");
-          storeKey(id, privateKey);
+          console.log(data);
+          const conversation = {...data.data.data?.attributes, id: data.data.data?.id};
+          if (!conversation.uuid) return console.error("no uuid");
+          storeKey(uuid, privateKey);
 
           const content = await encryptText(
             message,
             [publicKey, ...selectedHarys.map((h) => h.attributes?.publicKey!)],
-            id,
+            uuid,
             deviceId
           );
-          await sendMessage({
+          sendMessage({
             data: {
               data: {
                 content,
@@ -85,9 +88,30 @@ export default function useConversations(
               },
             },
           });
-
-          setConversationId(id);
-          setTimeout(refetch, 100);
+          queryClient.setQueryData(
+            ["conversation", uuid],
+            () => {
+              return {
+                myPublicKey: conversation.publicKey,
+                publicKey: conversation.publicKey,
+                conversation: { ...conversation, messages: undefined, harys: selectedHarys },
+                conversationDbId: conversation.id,
+                messages: [
+                  {
+                    content: message,
+                    timestamp: new Date(),
+                    sentByMe: true,
+                    sender: currentHary?.id! ?? "user",
+                  },
+                ],
+              };
+            }
+          );
+          
+          setTimeout(() => {
+            setConversationId(uuid);
+            refetch();
+          }, 100);
         },
       }
     );

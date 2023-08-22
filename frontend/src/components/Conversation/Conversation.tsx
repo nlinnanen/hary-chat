@@ -2,10 +2,8 @@ import useHary from "@hooks/useHary";
 import useMessages from "@hooks/useMessages";
 import { useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
-import { useGetConversationPage } from "src/api/conversation-page/conversation-page";
 import MessageInput from "./Message/MessageInput";
 import MessageList from "./Message/MessageList";
-import { useAutoAnimate } from "@formkit/auto-animate/react";
 
 function Conversation({ databaseKey }: { databaseKey?: string }) {
   const conversationId = useParams().conversationId!;
@@ -29,23 +27,25 @@ function Conversation({ databaseKey }: { databaseKey?: string }) {
 
   const isLoading = conversationLoading;
 
-  if (isLoading)
+  if (isLoading) {
     return (
       <div className="flex h-full w-full items-center justify-center text-center">
         <span className="loading loading-lg"></span>
       </div>
     );
+  }
 
   return (
     <div className="flex h-full flex-col">
       <div className="flex h-full flex-col overflow-y-auto p-2 py-20">
-        <div className="fixed top-0 z-10 h-16 flex justify-end pr-10 items-center bg-gradient-to-b from-base-100 from-80% w-full text-sm text-base-content font-semibold">
+        <div className="fixed top-0 z-10 flex h-16 w-full items-center justify-end bg-gradient-to-b from-base-100 from-80% pr-10 text-sm font-semibold text-base-content">
           Conversation with&nbsp;
           {conversation?.harys.map((h, i, a) => {
             const hary = harysMap.get(h.id)?.user?.data?.attributes;
             return (
               <span key={h.id}>
-                {hary?.firstName} {hary?.lastName}{i !== a.length - 1 && <>,&nbsp;</>}
+                {hary?.firstName} {hary?.lastName}
+                {i !== a.length - 1 && <>,&nbsp;</>}
               </span>
             );
           })}

@@ -47,7 +47,6 @@ export async function decryptText(
   deviceId: string
 ) {
   const privateKeyArmored = await getPrivateKey(dataBaseKey);
-  console.log("decrypting ", deviceId)
   const privateKey = await decryptKey({
     privateKey: await readPrivateKey({ armoredKey: privateKeyArmored }),
     passphrase: deviceId,
