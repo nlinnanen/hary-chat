@@ -2,7 +2,7 @@
 
 ## Launch
 
-- [ ] Telegram integration
+- [x] Telegram integration
 - [ ] Startup questions
 - [ ] Security
   - [ ] Research most secure algorithm
