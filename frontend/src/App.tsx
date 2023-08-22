@@ -1,9 +1,8 @@
-import React from "react";
-import { QueryClient, QueryClientProvider } from "react-query";
-import Conversations from "./components/Conversations";
-import { Route, Router, Routes } from "react-router-dom";
-import Public from "@components/Public";
 import Hary from "@components/Hary/Hary";
+import Public from "@components/Public";
+import Questions from "@components/Questions/Questions";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { Route, Routes } from "react-router-dom";
 
 const queryClient = new QueryClient();
 
@@ -12,7 +11,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <Routes>
         <Route path="/hary" element={<Hary />} />
-        <Route path="/" element={<Public />} />
+        <Route path="/" element={<Questions />} />
         <Route path="/conversation/:conversationId" element={<Public />} />
         <Route path="hary/conversation/:conversationId" element={<Hary />} />
       </Routes>

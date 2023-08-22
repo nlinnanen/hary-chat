@@ -4,7 +4,8 @@
   "info": {
     "singularName": "question",
     "pluralName": "questions",
-    "displayName": "Question"
+    "displayName": "Question",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -28,6 +29,11 @@
       "regex": "(multiselect|singleselect|range|input)",
       "required": true,
       "default": "singleselect"
+    },
+    "isFirst": {
+      "type": "boolean",
+      "default": false,
+      "required": false
     }
   }
 }
