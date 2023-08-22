@@ -10,9 +10,10 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <Routes>
-        <Route path="/hary" element={<Hary />} />
-        <Route path="/" element={<Questions />} />
-        <Route path="/conversation/:conversationId" element={<Public />} />
+        <Route path="hary" element={<Hary />} />
+        <Route path="" element={<Questions />} />
+        <Route path="conversation/:conversationId" element={<Public />} />
+        <Route path="conversation" element={<Public />} />
         <Route path="hary/conversation/:conversationId" element={<Hary />} />
       </Routes>
     </QueryClientProvider>

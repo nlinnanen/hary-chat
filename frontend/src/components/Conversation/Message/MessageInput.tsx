@@ -6,7 +6,7 @@ interface MessageInputProps {
   isSendMessageLoading: boolean;
   value: string;
   setNewMessage: React.Dispatch<React.SetStateAction<string>>;
-  ref: React.RefObject<HTMLTextAreaElement>;
+  areaRef: React.RefObject<HTMLTextAreaElement>;
   disabled: boolean;
   placeholder?: string;
 }
@@ -15,6 +15,7 @@ const MessageInput: FunctionComponent<MessageInputProps> = ({
   handleSendMessage,
   isSendMessageLoading,
   setNewMessage,
+  areaRef,
   ...props
 }) => {
 
@@ -28,9 +29,8 @@ const MessageInput: FunctionComponent<MessageInputProps> = ({
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     e.target.style.height = "inherit";
-    e.target.style.height = `${e.target.scrollHeight}px`;
     e.target.style.height = `${Math.min(
-      e.target.scrollHeight,
+      e.target.scrollHeight - 20,
       window.outerHeight / 3
     )}px`;
 
@@ -38,11 +38,12 @@ const MessageInput: FunctionComponent<MessageInputProps> = ({
   };
 
   return (
-    <div className="h-18 fixed bottom-0 z-20 flex w-full items-end space-x-2 bg-gradient-to-t from-base-100 from-85% p-5 lg:w-[calc(100vw-20em)]">
+    <div className="fixed bottom-0 z-20 flex w-full items-center space-x-2 bg-gradient-to-t from-base-100 from-85% p-3 lg:w-[calc(100vw-20em)]">
       <textarea
-        className={`h-min-18 h-18 input input-bordered box-border flex-grow`}
+        className={`p-2 input input-bordered box-border flex-grow`}
         onKeyDown={handleKeyDown}
         onChange={handleChange}
+        ref={areaRef}
         {...props}
       />
       <button className="btn btn-accent" onClick={handleSendMessage} disabled={props.disabled}>

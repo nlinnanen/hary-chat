@@ -1,5 +1,6 @@
 import HaryAvatar from "@components/Hary/HaryAvatar";
 import { FunctionComponent } from "react";
+import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import { Hary } from "src/api/documentation.schemas";
 import { MessageFrontend } from "src/types";
 
@@ -10,10 +11,10 @@ interface MessageProps {
 
 const Message: FunctionComponent<MessageProps> = ({ message, harysMap }) => {
   const senderIsHary = typeof message.sender === "number";
-
+  console.log(message.content);
   return (
     <div
-      key={message.timestamp.toString()}
+      key={message.timestamp.valueOf()}
       className={`chat ${message.sentByMe ? "chat-end" : "chat-start"}`}
     >
       {senderIsHary && (
@@ -43,7 +44,7 @@ const Message: FunctionComponent<MessageProps> = ({ message, harysMap }) => {
           !senderIsHary && "chat-bubble-accent"
         }`}
       >
-        {message.content}
+        <ReactMarkdown>{message.content}</ReactMarkdown>
       </div>
       <div className="chat-footer">
         <time className="text-xs opacity-50">

@@ -23,7 +23,7 @@ export default function useMessages(
     currentHary,
     conversation,
     conversationDbId,
-    deviceId
+    deviceId,
   } = useConversation(conversationId, dataBaseKey);
   const { mutate: sendMessage, isLoading: isSendMessageLoading } =
     usePostMessages();
@@ -54,7 +54,7 @@ export default function useMessages(
               content,
               sender: myPublicKey,
               conversation: conversationDbId,
-            }
+            },
           },
         },
         {
@@ -78,15 +78,18 @@ export default function useMessages(
                 };
               }
             );
-            chatRef.current?.scrollIntoView({ behavior: "smooth" });
+            setTimeout(
+              () => chatRef.current?.scrollIntoView({ behavior: "smooth" }),
+              100
+            );
           },
         }
       );
       try {
         // @ts-expect-error
-        areaRef.current.style.height = "inherit";
+        areaRef.current.style.height = "48px";
       } catch (e) {
-        console.log(e)
+        console.log(e);
       }
       setNewMessage("");
     } else {

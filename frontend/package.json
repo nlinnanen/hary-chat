@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@formkit/auto-animate": "^0.7.0",
     "axios": "^1.4.0",
     "openpgp": "^5.9.0",
     "react": "^18.2.0",

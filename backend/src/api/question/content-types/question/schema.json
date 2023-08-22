@@ -33,7 +33,7 @@
     "isFirst": {
       "type": "boolean",
       "default": false,
-      "required": false
+      "required": true
     }
   }
 }

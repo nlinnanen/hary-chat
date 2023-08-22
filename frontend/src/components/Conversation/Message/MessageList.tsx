@@ -16,7 +16,7 @@ function MessageList({ messages, harysMap }: Props) {
     );
   }
   return messages.map((message) => (
-    <Message message={message} harysMap={harysMap} />
+    <Message key={message.timestamp.valueOf()} message={message} harysMap={harysMap} />
   ));
 }
 
