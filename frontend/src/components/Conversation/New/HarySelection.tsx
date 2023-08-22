@@ -27,7 +27,7 @@ const HarySelection = ({ setSelectedHarys }: Props) => {
     return <span className="loading loading-ring loading-lg"></span>;
 
   return (
-    <div className="w-[90vw] rounded-xl bg-base-200 md:w-[60vw]">
+    <div className="w-full rounded-xl bg-base-200">
       {harys?.map((hary, i) => {
         const haryUser = hary.attributes?.user!;
         return (
@@ -35,8 +35,8 @@ const HarySelection = ({ setSelectedHarys }: Props) => {
             <div className="flex items-center px-2 py-1 md:px-6 md:py-4">
               <div className="collapse collapse-arrow">
                 <input type="checkbox" />
-                <div className="collapse-title flex items-center p-0 text-lg font-medium md:text-xl">
-                  <div className="avatar placeholder mr-6">
+                <div className="collapse-title flex items-center p-0 text-lg font-medium break-words pr-8">
+                  <div className="avatar placeholder mr-4">
                     <div className="w-12 rounded-full bg-neutral-focus text-neutral-content md:w-16">
                       <HaryAvatar haryId={hary.id!} />
                     </div>

@@ -4,6 +4,8 @@ import {
 } from "src/api/documentation.schemas";
 import MessageInput from "../Message/MessageInput";
 import HarySelection from "./HarySelection";
+import { useGetConversationPage } from "src/api/conversation-page/conversation-page";
+import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 
 interface Props {
   createConversation: (
@@ -18,17 +20,19 @@ const NewConversation = ({ createConversation }: Props) => {
   const [selectedHarys, setSelectedHarys] = useState<
     HaryListResponseDataItem[]
   >([]);
+  const {data: pageData } = useGetConversationPage()
 
   const handleSendMessage = () => {
     createConversation(newMessage, selectedHarys);
   };
 
   return (
-    <div className="h-full w-full">
-      <div className="flex h-full w-full items-center justify-center">
+    <div className="h-full w-full flex items-center justify-center">
+      <div className="flex w-[90vw] md:w-[60vw] h-full items-center flex-col justify-evenly">
+        <ReactMarkdown className="max-h-1/3 overflow-auto text-center">{pageData?.data.data?.attributes?.emptyConversationText ?? ""}</ReactMarkdown>
         <HarySelection setSelectedHarys={setSelectedHarys} />
+        <div></div>
       </div>
-      <div className="h-30 fixed bottom-0 z-20 flex w-full items-end space-x-2 bg-gradient-to-t from-base-100 from-60% p-5">
         <MessageInput
           handleSendMessage={handleSendMessage}
           isSendMessageLoading={false}
@@ -37,7 +41,6 @@ const NewConversation = ({ createConversation }: Props) => {
           ref={areaRef}
           disabled={!newMessage}
         />
-      </div>
     </div>
   );
 };
