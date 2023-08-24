@@ -62,6 +62,13 @@ export async function storeKey(dataBaseKey: string, privateKeyArmored: string) {
   tx.commit();
 }
 
+export async function deleteKey(dataBaseKey: string) {
+  const db = await openDatabase();
+  const tx = db.transaction("keys", "readwrite");
+  tx.objectStore("keys").delete(dataBaseKey);
+  tx.commit();
+}
+
 let userId: string | undefined;
 export async function getUserId() {
   if (window.PublicKeyCredential) {

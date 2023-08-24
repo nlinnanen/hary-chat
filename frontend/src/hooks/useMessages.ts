@@ -23,7 +23,9 @@ export default function useMessages(
     currentHary,
     conversation,
     conversationDbId,
+    deleteConversation,
     deviceId,
+    isError
   } = useConversation(conversationId, dataBaseKey);
   const { mutate: sendMessage, isLoading: isSendMessageLoading } =
     usePostMessages();
@@ -100,10 +102,12 @@ export default function useMessages(
   return {
     messages,
     conversation,
+    deleteConversation,
     newMessage,
     setNewMessage,
     handleSendMessage,
     isSendMessageLoading,
     isLoading,
+    isError
   };
 }

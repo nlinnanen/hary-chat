@@ -28,7 +28,6 @@ export default {
     }
   },
   getConversationsByUuids: async (ctx, next) => {
-    console.log(ctx.request.body.data)
     const { uuids } = ctx.request.body.data;
     if(Array.isArray(uuids) === false) {
       ctx.response.status = 400;
@@ -57,4 +56,34 @@ export default {
       ctx.body = err;
     }
   },
+  deleteConversationByUuid: async (ctx, next) => {
+    try {
+      const result = await strapi.entityService.findMany(
+        "api::conversation.conversation",
+        {
+          populate: {
+            messages: true,
+            harys: true,
+          },
+          filters: {
+            uuid: ctx.params.uuid,
+          },
+        }
+      );
+      if (result.length !== 0) {
+        const conversation = result[0];
+        await strapi.entityService.delete(
+          "api::conversation.conversation",
+          conversation.id
+        );
+        ctx.body = conversation;
+        ctx.status = 200;
+      } else {
+        ctx.response.status = 404;
+        throw new Error("No conversation found");
+      }
+    } catch (err) {
+      ctx.body = err;
+    }
+  }
 };

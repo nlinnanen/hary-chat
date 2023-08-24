@@ -1,4 +1,4 @@
-import { getUserId } from "@utils/crypto/keys";
+import { deleteKey, getUserId } from "@utils/crypto/keys";
 import { decryptText } from "@utils/crypto/messages";
 import axios from "axios";
 import { useMemo } from "react";
@@ -62,12 +62,12 @@ export default function useConversation(
 ) {
   const { isLoading: harysLoading, currentHary, harys } = useHary();
   const { data: deviceId } = useQuery(["deviceId", conversationId], () => getUserId())
-  const { data, refetch, isLoading, isRefetching } = useQuery(
+  const { data, refetch, isLoading, isRefetching, isError } = useQuery(
     ['conversation', conversationId],
     () => queryConversation(conversationId, currentHary?.attributes?.publicKey, dataBaseKey, deviceId, harys),
     {
-      refetchIntervalInBackground: true,
       refetchInterval: 10_000,
+      retry: false,
       enabled: !!deviceId
     }
   );
@@ -82,13 +82,22 @@ export default function useConversation(
     };
   }, [data]);
 
+
+  const deleteConversation = async () => {
+    await axios.delete(`/conversation/uuid/${conversationId}`).catch(console.error);
+    await deleteKey(conversationId);
+    window.location.replace("/conversation");
+  }
+  
   return {
     ...data,
+    deleteConversation,
     currentHary,
     conversationHaryPublicKeys,
     refetch,
     conversationLoading: isLoading || harysLoading,
     conversationRefetching: isRefetching,
-    deviceId
+    deviceId,
+    isError
   };
 }

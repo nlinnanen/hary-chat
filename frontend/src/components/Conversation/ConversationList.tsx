@@ -25,18 +25,20 @@ const ConversationList: FunctionComponent<ConversationListProps> = ({
             return (
               <li
                 key={uuid}
-                className={`w-full p-2 ${
+                className={`w-full ${
                   isSelected ? "rounded-lg bg-neutral text-neutral-content" : ""
                 }`}
               >
-                <a className="p-0" onClick={() => setConversationId(uuid)}>
+                <a className="w-full flex flex-col items-start p-2 text-md" onClick={() => setConversationId(uuid)}>
                   {new Date(createdAt).toLocaleString("fi-FI", {
-                    
+                    timeStyle: "short",
+                    dateStyle: "medium",
+                    timeZone: "Europe/Helsinki",
                   })}
-                </a>
                   <div className="text-right w-full opacity-30 text-xs p-0">
                     {uuid}
                   </div>
+                </a>
               </li>
             );
           })}

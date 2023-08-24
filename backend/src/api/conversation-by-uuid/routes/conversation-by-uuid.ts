@@ -17,6 +17,15 @@ export default {
        policies: [],
        middlewares: [],
      },
+    },
+    {
+     method: 'DELETE',
+     path: '/conversation/uuid/:uuid',
+     handler: 'conversation-by-uuid.deleteConversationByUuid',
+     config: {
+       policies: [],
+       middlewares: [],
+     },
     }
   ],
 };

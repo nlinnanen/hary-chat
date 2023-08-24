@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { usePostConversations } from "src/api/conversation/conversation";
 import {
   createUserId,
+  deleteKey,
   generateKeys,
   getUserId,
   storeKey,
@@ -36,7 +37,6 @@ export default function useConversations(
   const { data: conversations } = useQuery(
     ["conversations", conversationIds],
     async () => {
-      console.log(conversationIds);
       const conversations = await axios.post(`/conversation/uuid/many`, {
         data: { uuids: conversationIds },
       });
@@ -55,6 +55,7 @@ export default function useConversations(
       navigate(`/conversation/${id}`);
     }
   };
+
 
   const newConversation = () => {
     navigate("/conversation/new", { replace: true });
