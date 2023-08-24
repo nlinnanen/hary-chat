@@ -15,11 +15,12 @@ const ConversationList: FunctionComponent<ConversationListProps> = ({
   newConversation,
   databaseKey,
 }) => {
+
   return (
     <ul className="menu h-full w-80 bg-base-200 p-4 text-lg">
       <div className="flex h-full flex-col justify-between">
         <div>
-          {conversations.map(({createdAt, uuid}, index) => {
+          {conversations?.map(({createdAt, uuid}, index) => {
             if (!uuid) return null;
             const isSelected = conversationId === uuid;
             return (

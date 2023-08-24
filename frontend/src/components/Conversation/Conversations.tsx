@@ -19,8 +19,6 @@ export default function Conversations({
     createConversation,
   } = useConversations(getConversationIds);
 
-  if (!conversations) return null;
-
   return (
     <div className="drawer h-screen lg:drawer-open">
       <input id="my-drawer" type="checkbox" className="drawer-toggle" />

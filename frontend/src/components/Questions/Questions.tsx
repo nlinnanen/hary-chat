@@ -86,7 +86,7 @@ const Questions = () => {
             {(question?.answerOptions as any).map((answer: any) => (
               <button
                 className="btn flex-grow"
-                key={answer.id}
+                key={answer.answer}
                 onClick={() => handleAnswerClick(answer.next)}
               >
                 {answer.answer}
