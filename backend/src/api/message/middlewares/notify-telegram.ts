@@ -31,7 +31,7 @@ export default (config, { strapi }: { strapi: Strapi }) => {
     );
     const chatIds = conversation.harys.map(hary => hary.publicKey !== sender && hary.user?.telegramChatId)
     chatIds.forEach(chatId => {
-      chatId && bot.telegram.sendMessage(chatId, `You have a new message\\! [Link to the conversation](${process.env.FRONTEND_URL}/hary/conversation/${conversation.uuid})`, { parse_mode: 'MarkdownV2' })
+      chatId && bot.telegram.sendMessage(chatId, `You have a new message\\! [Link to the conversation](${process.env.FRONTEND_URL}hary/conversation/${conversation.uuid})`, { parse_mode: 'MarkdownV2' })
     })
 
 

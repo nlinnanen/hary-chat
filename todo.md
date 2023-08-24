@@ -13,8 +13,8 @@
   - [ ] Don't query conversations by incremented id
   - [ ] Prevent xss
   - [ ] Validate sender public key is hary
-  - [ ] Passphrases
-  - [ ] Use https
+  - [x] Passphrases
+  - [x] Use https
   - [ ] PREVENT UPDATE OF HARY PUBLIC KEY
   - [ ] CORS
 - [ ] Deployment
@@ -28,7 +28,7 @@
   - [x] Create conversation button in menu
   - [x] Overflow in create conv viewBox
   - [x] Show harys in conversation header
-  - [ ] Prodeko colors?
+  - [x] Prodeko colors?
   - [ ] Prodeko logo
   - [x] Remove create conv from hary
   - [x] Empty conv message not centered
