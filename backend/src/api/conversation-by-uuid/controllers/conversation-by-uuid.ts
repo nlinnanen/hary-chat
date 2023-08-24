@@ -28,7 +28,8 @@ export default {
     }
   },
   getConversationsByUuids: async (ctx, next) => {
-    const { uuids } = ctx.request.body;
+    console.log(ctx.request.body.data)
+    const { uuids } = ctx.request.body.data;
     if(Array.isArray(uuids) === false) {
       ctx.response.status = 400;
       ctx.body = "uuids must be an array";

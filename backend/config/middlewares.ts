@@ -5,12 +5,7 @@ export default [
   "strapi::poweredBy",
   "strapi::logger",
   "strapi::query",
-  {
-    name: "strapi::body",
-    config: {
-      parsedMethods: ["GET", "POST", "PUT", "PATCH"],
-    },
-  },
+  "strapi::body",
   "strapi::session",
   "strapi::favicon",
   "strapi::public",

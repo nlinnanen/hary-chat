@@ -14,7 +14,7 @@ const queryConversation = async (
   deviceId: string | undefined,
   harys: HaryListResponseDataItem[] | undefined
 ): Promise<ConversationFrontend> => {
-  const {data: conversation} = await axios.get(`/conversation-by-pk/${conversationId}`)
+  const {data: conversation} = await axios.get(`/conversation/uuid/${conversationId}`)
   const encryptedMessages = conversation.messages;
   const myPublicKey =
     dataBaseKey === "hary"

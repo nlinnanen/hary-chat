@@ -1,7 +1,7 @@
 export default {
   routes: [
     {
-      method: 'GET',
+      method: 'POST',
       path: '/conversation/uuid/many',
       handler: 'conversation-by-uuid.getConversationsByUuids',
       config: {

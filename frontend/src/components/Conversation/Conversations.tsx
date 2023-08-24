@@ -13,13 +13,13 @@ export default function Conversations({
 }) {
   const {
     conversationId,
-    conversationIds,
+    conversations,
     setConversationId,
     newConversation,
     createConversation,
   } = useConversations(getConversationIds);
 
-  if (!conversationIds) return null;
+  if (!conversations) return null;
 
   return (
     <div className="drawer h-screen lg:drawer-open">
@@ -27,7 +27,7 @@ export default function Conversations({
       <div className="drawer-side z-30">
         <label htmlFor="my-drawer" className="drawer-overlay"></label>
         <ConversationList
-          conversationIds={conversationIds}
+          conversations={conversations}
           conversationId={conversationId}
           setConversationId={setConversationId}
           newConversation={newConversation}

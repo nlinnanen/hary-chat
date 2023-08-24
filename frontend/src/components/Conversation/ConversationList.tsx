@@ -1,7 +1,7 @@
 import { FunctionComponent } from "react";
 
 interface ConversationListProps {
-  conversationIds: (string | undefined)[];
+  conversations: any[];
   conversationId: string | undefined;
   setConversationId: (id: string ) => void;
   newConversation: () => void;
@@ -9,7 +9,7 @@ interface ConversationListProps {
 }
 
 const ConversationList: FunctionComponent<ConversationListProps> = ({
-  conversationIds,
+  conversations,
   conversationId,
   setConversationId,
   newConversation,
@@ -19,19 +19,24 @@ const ConversationList: FunctionComponent<ConversationListProps> = ({
     <ul className="menu h-full w-80 bg-base-200 p-4 text-lg">
       <div className="flex h-full flex-col justify-between">
         <div>
-          {conversationIds.map((id, index) => {
-            if (!id) return null;
-            const isSelected = conversationId === id;
+          {conversations.map(({createdAt, uuid}, index) => {
+            if (!uuid) return null;
+            const isSelected = conversationId === uuid;
             return (
               <li
-                key={id}
-                className={
+                key={uuid}
+                className={`w-full p-2 ${
                   isSelected ? "rounded-lg bg-neutral text-neutral-content" : ""
-                }
+                }`}
               >
-                <a onClick={() => setConversationId(id)}>
-                  Conversation {index + 1}
+                <a className="p-0" onClick={() => setConversationId(uuid)}>
+                  {new Date(createdAt).toLocaleString("fi-FI", {
+                    
+                  })}
                 </a>
+                  <div className="text-right w-full opacity-30 text-xs p-0">
+                    {uuid}
+                  </div>
               </li>
             );
           })}

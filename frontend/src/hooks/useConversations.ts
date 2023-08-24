@@ -17,6 +17,7 @@ import {
   HaryUser,
 } from "src/api/documentation.schemas";
 import { ConversationFrontend } from "src/types";
+import axios from "axios";
 
 export default function useConversations(
   getConversationIds: () => Promise<(string | undefined)[]>
@@ -31,6 +32,20 @@ export default function useConversations(
     "conversationIds",
     getConversationIds,
     { staleTime: 1000 * 60 * 5, enabled: !isLoading }
+  );
+  const { data: conversations } = useQuery(
+    ["conversations", conversationIds],
+    async () => {
+      console.log(conversationIds);
+      const conversations = await axios.post(`/conversation/uuid/many`, {
+        data: { uuids: conversationIds },
+      });
+      return conversations.data
+    },
+    {
+      enabled: !!conversationIds?.length,
+      refetchOnWindowFocus: false,
+    }
   );
 
   const setConversationId = (id: string) => {
@@ -69,7 +84,10 @@ export default function useConversations(
       {
         async onSuccess(data) {
           console.log(data);
-          const conversation = {...data.data.data?.attributes, id: data.data.data?.id};
+          const conversation = {
+            ...data.data.data?.attributes,
+            id: data.data.data?.id,
+          };
           if (!conversation.uuid) return console.error("no uuid");
           storeKey(uuid, privateKey);
 
@@ -88,26 +106,27 @@ export default function useConversations(
               },
             },
           });
-          queryClient.setQueryData(
-            ["conversation", uuid],
-            () => {
-              return {
-                myPublicKey: conversation.publicKey,
-                publicKey: conversation.publicKey,
-                conversation: { ...conversation, messages: undefined, harys: selectedHarys },
-                conversationDbId: conversation.id,
-                messages: [
-                  {
-                    content: message,
-                    timestamp: new Date(),
-                    sentByMe: true,
-                    sender: currentHary?.id! ?? "user",
-                  },
-                ],
-              };
-            }
-          );
-          
+          queryClient.setQueryData(["conversation", uuid], () => {
+            return {
+              myPublicKey: conversation.publicKey,
+              publicKey: conversation.publicKey,
+              conversation: {
+                ...conversation,
+                messages: undefined,
+                harys: selectedHarys,
+              },
+              conversationDbId: conversation.id,
+              messages: [
+                {
+                  content: message,
+                  timestamp: new Date(),
+                  sentByMe: true,
+                  sender: currentHary?.id! ?? "user",
+                },
+              ],
+            };
+          });
+
           setTimeout(() => {
             setConversationId(uuid);
             refetch();
@@ -119,6 +138,7 @@ export default function useConversations(
 
   return {
     conversationIds,
+    conversations,
     conversationId,
     setConversationId,
     newConversation,
