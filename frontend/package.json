@@ -35,7 +35,7 @@
   "scripts": {
     "dev": "vite --mode development",
     "start": "vite",
-    "build": "cd ../backend && orval --config ./orval.config.js && cd ../frontend && tsc && vite build",
+    "build": "cd ../backend && npm i && orval --config ./orval.config.js && cd ../frontend && tsc && vite build",
     "serve": "vite preview"
   },
   "eslintConfig": {
