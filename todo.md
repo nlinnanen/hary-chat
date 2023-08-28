@@ -3,15 +3,14 @@
 ## Launch
 
 - [x] Telegram integration
-- [ ] Startup questions
+- [X] Startup questions
 - [ ] Security
   - [ ] Research most secure algorithm
   - [ ] Research open pgp protocol
   - [ ] Penetration testing?
-  - [ ] Use web crypto for encryption
   - [ ] Session based v- [ ] jwt local storage
-  - [ ] Don't query conversations by incremented id
-  - [ ] Prevent xss
+  - [x] Don't query conversations by incremented id
+  - [x] Prevent xss
   - [ ] Validate sender public key is hary
   - [x] Passphrases
   - [x] Use https

@@ -14,7 +14,6 @@ COPY ./ .
 # Build the Strapi application
 RUN npm run build
 # Expose the Strapi port
-EXPOSE 8443
 EXPOSE 1337
 # Start the Strapi application
 CMD ["npm", "run", "start"]

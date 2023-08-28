@@ -1,6 +1,6 @@
 {
-  "name": "hary-bot-2-frontend",
-  "version": "0.1.0",
+  "name": "hary-chat-frontend",
+  "version": "1.0.1",
   "private": true,
   "dependencies": {
     "axios": "^1.4.0",
@@ -35,7 +35,7 @@
   "scripts": {
     "dev": "vite --mode development",
     "start": "vite",
-    "build": "tsc && vite build",
+    "build": "cd ../backend && orval --config ./orval.config.js && cd ../frontend && tsc && vite build",
     "serve": "vite preview"
   },
   "eslintConfig": {
