@@ -19,7 +19,7 @@ export default defineConfig(({ command }) => {
       server: {
         headers: {
           "Content-Security-Policy":
-            "default-src 'none'; script-src 'self'; connect-src 'self' https://hary-bot.fly.dev; img-src 'self' ; style-src 'self'; manifest-src 'self'",
+            "default-src 'none'; script-src 'self'; connect-src 'self' harychat.azurewebsites.net; img-src 'self' ; style-src 'self'; manifest-src 'self'",
         },
       },
       plugins: [react(), viteTsconfigPaths()],

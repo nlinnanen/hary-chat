@@ -20,7 +20,6 @@ if ('serviceWorker' in navigator) {
   });
 }
 
-window.alert("Avaa selaimessa pls")
 
 root.render(
   <React.StrictMode>

@@ -36,7 +36,7 @@ export default function Login({
       }
     );
   };
-  console.log(error)
+  
   return (
     <div className="flex h-screen items-center justify-center">
       <form

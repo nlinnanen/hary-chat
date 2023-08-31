@@ -9,7 +9,9 @@ import { useGetUsers } from "src/api/users-permissions-users-roles/users-permiss
 export default function useHary() {
   const userId = parseInt(localStorage.getItem("userId") ?? "");
   const { data: haryData, isLoading } = useGetHarys(undefined, {
-    axios: { params: { populate: "*", } },
+    axios: { params: { populate: { user: {
+      populate: "picture"
+    }}, } },
   });
   const { mutate: mutateHary } = usePostHarys();
   const harys = haryData?.data?.data;
