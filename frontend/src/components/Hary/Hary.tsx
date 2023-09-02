@@ -37,8 +37,7 @@ export default function Hary() {
       return []
     }
 
-    const ids = data.data.data?.map((conversation: any) => conversation.uuid as string)
-    console.log(ids)
+    const ids = data.data.data?.map((conversation) => conversation.attributes?.uuid)
     return ids;
   };
 
