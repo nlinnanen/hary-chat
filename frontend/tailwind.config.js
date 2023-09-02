@@ -11,20 +11,30 @@ module.exports = {
   daisyui: {
     themes : [
       {
-        mytheme: {
-          primary: "#570df8",  
-          secondary: "#f000b8",  
-          accent: "#1dcdbc",  
-          neutral: "#d1d5db",  
-          "base-100": "#f5f5f5",
+        myLight: {
+          primary: "#002e7d",  
+          secondary: "#0053a0",  
+          accent: "#002e7d",  
+          neutral: "#37ddc9",  
+          "base-100": "#eceff1",
+          info: "#3abff8",  
+          success: "#9ac31a",  
+          warning: "#fbbd23",  
+          error: "#f87272",
+        },
+        myDark: {
+          primary: "#002e7d",  
+          secondary: "#0053a0",  
+          accent: "#35536F",  
+          neutral: "#303134",  
+          "base-100": "#202124",
           info: "#3abff8",  
           success: "#36d399",  
           warning: "#fbbd23",  
           error: "#f87272",
-        }
+        },
       },
-      "dark"
     ],
-    darkTheme: "dark",
+    darkTheme: "myDark",
   }
 }
