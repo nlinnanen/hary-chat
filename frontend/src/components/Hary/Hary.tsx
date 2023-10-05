@@ -24,20 +24,21 @@ export default function Hary() {
       fields: {
         0: "uuid",
       },
-      filters: {
-        haryt: {
-          $contains: currentHary?.id,
-        }
-      },
+      populate: "harys",
+    });
 
-    })
-
-    if(!data.data.data) {
-      console.error("No conversations found")
-      return []
+    if (!data.data.data) {
+      console.error("No conversations found");
+      return [];
     }
 
-    const ids = data.data.data?.map((conversation) => conversation.attributes?.uuid)
+    const ids = data.data.data
+      ?.filter((conversation) =>
+        conversation.attributes?.harys?.data?.some(
+          (h) => h.id == currentHary?.id
+        )
+      )
+      .map((conversation) => conversation.attributes?.uuid);
     return ids;
   };
 
