@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import MessageInput from "./Message/MessageInput";
 import MessageList from "./Message/MessageList";
 import { PiTrashLight } from "react-icons/pi";
+import ExportKey from "@components/ExportKey/ExportKey";
 
 function Conversation({ databaseKey }: { databaseKey?: string }) {
   const conversationId = useParams().conversationId!;
@@ -80,6 +81,7 @@ function Conversation({ databaseKey }: { databaseKey?: string }) {
               </span>
             );
           })}
+          {databaseKey != "hary" && <ExportKey />}
           <button
             className="btn btn-ghost mx-4 hover:bg-warning"
             onClick={handleDelete}

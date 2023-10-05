@@ -1,9 +1,10 @@
+import ImportKey from "@components/ExportKey/ImportKey";
 import { FunctionComponent } from "react";
 
 interface ConversationListProps {
   conversations: any[];
   conversationId: string | undefined;
-  setConversationId: (id: string ) => void;
+  setConversationId: (id: string) => void;
   newConversation: () => void;
   databaseKey: string | undefined;
 }
@@ -15,12 +16,11 @@ const ConversationList: FunctionComponent<ConversationListProps> = ({
   newConversation,
   databaseKey,
 }) => {
-
   return (
     <ul className="menu h-full w-80 bg-base-200 p-4 text-lg">
       <div className="flex h-full flex-col justify-between">
         <div>
-          {conversations?.map(({createdAt, uuid}, index) => {
+          {conversations?.map(({ createdAt, uuid }, index) => {
             if (!uuid) return null;
             const isSelected = conversationId === uuid;
             return (
@@ -30,13 +30,16 @@ const ConversationList: FunctionComponent<ConversationListProps> = ({
                   isSelected ? "rounded-lg bg-neutral text-neutral-content" : ""
                 }`}
               >
-                <a className="w-full flex flex-col items-start p-2 text-md" onClick={() => setConversationId(uuid)}>
+                <a
+                  className="text-md flex w-full flex-col items-start p-2"
+                  onClick={() => setConversationId(uuid)}
+                >
                   {new Date(createdAt).toLocaleString("fi-FI", {
                     timeStyle: "short",
                     dateStyle: "medium",
                     timeZone: "Europe/Helsinki",
                   })}
-                  <div className="text-right w-full opacity-30 text-xs p-0">
+                  <div className="w-full p-0 text-right text-xs opacity-30">
                     {uuid}
                   </div>
                 </a>
@@ -45,9 +48,12 @@ const ConversationList: FunctionComponent<ConversationListProps> = ({
           })}
         </div>
         {databaseKey != "hary" && (
-          <button className="btn mt-4 align-middle" onClick={newConversation}>
-            New conversation
-          </button>
+          <div className="flex flex-col">
+            <button className="btn mt-4 align-middle" onClick={newConversation}>
+              New conversation
+            </button>
+            <ImportKey />
+          </div>
         )}
       </div>
     </ul>
