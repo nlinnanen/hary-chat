@@ -13,6 +13,20 @@ import {
 } from "openpgp";
 import { getPrivateKey, getUserId } from "./keys";
 
+
+export async function signText(text: string, dataBaseKey: string, deviceId: string) {
+  const privateKeyString = await getPrivateKey(dataBaseKey);
+  const privateKey = await decryptKey({
+    privateKey: await readPrivateKey({ armoredKey: privateKeyString }),
+    passphrase: deviceId,
+  });
+  const signedMessage = await sign({
+    message: await createCleartextMessage({ text }),
+    signingKeys: privateKey,
+  });
+  return signedMessage;
+}
+
 export async function encryptText(
   text: string,
   publicKeys: string[],

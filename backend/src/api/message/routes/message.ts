@@ -9,6 +9,9 @@ export default factories.createCoreRouter('api::message.message', {
     create: {
       middlewares: [
         'api::message.notify-telegram'
+      ],
+      policies: [
+        'global::is-valid'
       ]
     }
   }

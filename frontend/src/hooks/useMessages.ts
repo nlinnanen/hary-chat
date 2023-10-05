@@ -25,7 +25,7 @@ export default function useMessages(
     conversationDbId,
     deleteConversation,
     deviceId,
-    isError
+    isError,
   } = useConversation(conversationId, dataBaseKey);
   const { mutate: sendMessage, isLoading: isSendMessageLoading } =
     usePostMessages();
@@ -108,6 +108,6 @@ export default function useMessages(
     handleSendMessage,
     isSendMessageLoading,
     isLoading,
-    isError
+    isError,
   };
 }

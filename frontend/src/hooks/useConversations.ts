@@ -19,6 +19,7 @@ import {
 } from "src/api/documentation.schemas";
 import { ConversationFrontend } from "src/types";
 import axios from "axios";
+import { verifyKey } from "@utils/verifyKey";
 
 export default function useConversations(
   getConversationIds: () => Promise<(string | undefined)[]>
@@ -84,7 +85,7 @@ export default function useConversations(
       },
       {
         async onSuccess(data) {
-          console.log(data);
+          await verifyKey(uuid, uuid, deviceId!)
           const conversation = {
             ...data.data.data?.attributes,
             id: data.data.data?.id,
