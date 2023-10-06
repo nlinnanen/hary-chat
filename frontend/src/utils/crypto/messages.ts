@@ -11,14 +11,14 @@ import {
   sign,
   verify,
 } from "openpgp";
-import { getPrivateKey, getUserId } from "./keys";
+import { getPrivateKey } from "./keys";
 
 
-export async function signText(text: string, dataBaseKey: string, deviceId: string) {
+export async function signText(text: string, dataBaseKey: string, passphrase: string) {
   const privateKeyString = await getPrivateKey(dataBaseKey);
   const privateKey = await decryptKey({
     privateKey: await readPrivateKey({ armoredKey: privateKeyString }),
-    passphrase: deviceId,
+    passphrase,
   });
   const signedMessage = await sign({
     message: await createCleartextMessage({ text }),
@@ -31,14 +31,14 @@ export async function encryptText(
   text: string,
   publicKeys: string[],
   dataBaseKey: string,
-  deviceId: string
+  passphrase: string
 ) {
-  console.log("encrypting ", deviceId)
+  console.log("encrypting ", passphrase)
   const message = await createCleartextMessage({ text });
   const privateKeyString = await getPrivateKey(dataBaseKey);
   const privateKey = await decryptKey({
     privateKey: await readPrivateKey({ armoredKey: privateKeyString }),
-    passphrase: deviceId,
+    passphrase: passphrase,
   });
   const signedMessage = await sign({
     message,
@@ -58,12 +58,12 @@ export async function decryptText(
   encrypted: string,
   dataBaseKey: string,
   publicKey: string,
-  deviceId: string
+  passphrase: string
 ) {
   const privateKeyArmored = await getPrivateKey(dataBaseKey);
   const privateKey = await decryptKey({
     privateKey: await readPrivateKey({ armoredKey: privateKeyArmored }),
-    passphrase: deviceId,
+    passphrase,
   });
 
   const message = await readMessage({

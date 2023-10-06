@@ -6,16 +6,19 @@ import MessageInput from "../Message/MessageInput";
 import HarySelection from "./HarySelection";
 import { useGetConversationPage } from "src/api/conversation-page/conversation-page";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import PassphraseModal from "../PassphraseModal";
 
 interface Props {
   createConversation: (
     message: string,
-    selectedHarys: HaryListResponseDataItem[]
+    selectedHarys: HaryListResponseDataItem[],
+    passphrase: string
   ) => void;
 }
 
-const NewConversation = ({ createConversation }: Props) => {
+const NewConversation = ({ createConversation}: Props) => {
   const areaRef = useRef<HTMLTextAreaElement>(null);
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [newMessage, setNewMessage] = useState<string>("");
   const [selectedHarys, setSelectedHarys] = useState<
     HaryListResponseDataItem[]
@@ -23,11 +26,23 @@ const NewConversation = ({ createConversation }: Props) => {
   const {data: pageData } = useGetConversationPage()
 
   const handleSendMessage = () => {
-    createConversation(newMessage, selectedHarys);
+    console.log("handleSendMessage")
+    setModalOpen(true);
   };
 
+  const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const newPassphrase = (e.target as HTMLInputElement).value
+    if (e.key === "Enter" && newPassphrase ) {
+      createConversation(newMessage, selectedHarys, newPassphrase);
+    }
+  };
+
+  if(modalOpen) {
+    return <PassphraseModal handleKeyUp={handleKeyUp} />
+  }
+
   return (
-    <div className="h-full w-full flex items-center justify-center">
+    <div className="h-full w-full flex flex-col items-center justify-around">
       <div className="flex w-[90vw] md:w-[60vw] h-full items-center flex-col justify-evenly">
         <ReactMarkdown className="max-h-1/3 overflow-auto text-center">{pageData?.data.data?.attributes?.emptyConversationText ?? ""}</ReactMarkdown>
         <HarySelection setSelectedHarys={setSelectedHarys} />

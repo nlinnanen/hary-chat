@@ -1,7 +1,8 @@
-import { deleteKey, getUserId } from "@utils/crypto/keys";
-import { decryptText, signText } from "@utils/crypto/messages";
+import { deleteKey } from "@utils/crypto/keys";
+import { decryptText } from "@utils/crypto/messages";
+import { verifyKey } from "@utils/verifyKey";
 import axios from "axios";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useQuery } from "react-query";
 import {
   HaryListResponseDataItem,
@@ -9,20 +10,19 @@ import {
 } from "src/api/documentation.schemas";
 import { ConversationFrontend, MessageFrontend } from "src/types";
 import useHary from "./useHary";
-import { verifyKey } from "@utils/verifyKey";
 
 const queryConversation = async (
   conversationId: string,
   currentHaryPk: string | undefined,
   dataBaseKey: string,
-  deviceId: string | undefined,
+  passphrase: string | undefined,
   harys: HaryListResponseDataItem[] | undefined
 ): Promise<ConversationFrontend> => {
-  if (!deviceId) {
+  if (!passphrase) {
     throw new Error("No device id found!");
   }
 
-  await verifyKey(conversationId, dataBaseKey, deviceId)
+  await verifyKey(conversationId, dataBaseKey, passphrase)
   const { data: conversation } = await axios.get(
     `/conversation/uuid/${conversationId}`
   );
@@ -31,9 +31,8 @@ const queryConversation = async (
   const myPublicKey =
     dataBaseKey === "hary" ? currentHaryPk! : conversation.publicKey;
 
-  if (!myPublicKey || !deviceId) {
-    console.log(deviceId, myPublicKey);
-    throw new Error("No public key or device id found!");
+  if (!myPublicKey) {
+    throw new Error("No public key found!");
   }
 
   const messages = await Promise.all(
@@ -44,7 +43,7 @@ const queryConversation = async (
           message.content,
           dataBaseKey,
           message.sender,
-          deviceId
+          passphrase
         );
         return {
           timestamp: new Date(message.createdAt ?? ""),
@@ -71,10 +70,8 @@ export default function useConversation(
   conversationId: string,
   dataBaseKey: string
 ) {
+  const [passphrase, setPassphrase] = useState<string | undefined>(undefined);
   const { isLoading: harysLoading, currentHary, harys } = useHary();
-  const { data: deviceId } = useQuery(["deviceId", conversationId], () =>
-    getUserId()
-  );
   const { data, refetch, isLoading, isRefetching, isError } = useQuery(
     ["conversation", conversationId],
     () =>
@@ -82,13 +79,13 @@ export default function useConversation(
         conversationId,
         currentHary?.attributes?.publicKey,
         dataBaseKey,
-        deviceId,
+        passphrase,
         harys
       ),
     {
       refetchInterval: 10_000,
       retry: false,
-      enabled: !!deviceId,
+      enabled: !!passphrase,
     }
   );
   // Use memo to prevent unnecessary re-renders
@@ -125,7 +122,8 @@ export default function useConversation(
     refetch,
     conversationLoading: isLoading || harysLoading,
     conversationRefetching: isRefetching,
-    deviceId,
+    setPassphrase,
+    passphrase,
     isError,
   };
 }

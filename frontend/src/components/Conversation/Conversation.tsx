@@ -6,6 +6,7 @@ import MessageInput from "./Message/MessageInput";
 import MessageList from "./Message/MessageList";
 import { PiTrashLight } from "react-icons/pi";
 import ExportKey from "@components/ExportKey/ExportKey";
+import PassphraseModal from "./PassphraseModal";
 
 function Conversation({ databaseKey }: { databaseKey?: string }) {
   const conversationId = useParams().conversationId!;
@@ -21,6 +22,8 @@ function Conversation({ databaseKey }: { databaseKey?: string }) {
     isSendMessageLoading,
     conversation,
     deleteConversation,
+    passphrase,
+    setPassphrase
   } = useMessages(conversationId, databaseKey, chatRef, areRef);
 
   const { harysMap } = useHary();
@@ -31,11 +34,24 @@ function Conversation({ databaseKey }: { databaseKey?: string }) {
     }
   };
 
+  const handlePassphraseKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      setPassphrase((e.target as HTMLInputElement).value);
+    }
+  }
+
   useEffect(() => {
     chatRef.current?.scrollIntoView();
   }, [conversationId]);
 
   const isLoading = conversationLoading;
+
+
+  if(!passphrase) {
+    return (
+      <PassphraseModal handleKeyUp={handlePassphraseKeyUp} />
+    )
+  }
 
   if (isError)
     return (
@@ -58,7 +74,7 @@ function Conversation({ databaseKey }: { databaseKey?: string }) {
           </p>
         </div>
       </div>
-    );
+    ); 
 
   if (isLoading) {
     return (
