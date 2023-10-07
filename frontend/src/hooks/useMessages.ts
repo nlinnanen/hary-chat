@@ -24,8 +24,9 @@ export default function useMessages(
     conversation,
     conversationDbId,
     deleteConversation,
-    deviceId,
-    isError
+    setPassphrase,
+    passphrase,
+    isError,
   } = useConversation(conversationId, dataBaseKey);
   const { mutate: sendMessage, isLoading: isSendMessageLoading } =
     usePostMessages();
@@ -47,7 +48,7 @@ export default function useMessages(
         newMessage,
         [...conversationHaryPublicKeys, publicKey],
         dataBaseKey,
-        deviceId!
+        passphrase!
       );
       sendMessage(
         {
@@ -108,6 +109,8 @@ export default function useMessages(
     handleSendMessage,
     isSendMessageLoading,
     isLoading,
-    isError
+    isError,
+    setPassphrase,
+    passphrase,
   };
 }

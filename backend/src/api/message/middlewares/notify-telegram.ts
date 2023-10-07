@@ -12,6 +12,12 @@ export default (config, { strapi }: { strapi: Strapi }) => {
     strapi.log.info("In notify-telegram middleware.");
 
     const bot = ctx.state.bot as Telegraf<Context<Update>>
+
+    if(!bot) {
+      strapi.log.error("Bot not defined!")
+      return await next();
+    }
+
     const conversationId = ctx.request.body.data.conversation;
     const sender = ctx.request.body.data.sender;
     console.log(typeof conversationId);

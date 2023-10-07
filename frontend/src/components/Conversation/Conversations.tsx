@@ -43,7 +43,7 @@ export default function Conversations({
         </div>
         {conversationId ? (
           conversationId === "new" ? (
-            <NewConversation createConversation={createConversation} />
+            <NewConversation createConversation={createConversation}/>
           ) : (
             <Conversation databaseKey={databaseKey} />
           )

@@ -16,6 +16,8 @@
   - [x] Use https
   - [ ] PREVENT UPDATE OF HARY PUBLIC KEY
   - [ ] CORS
+  - [ ] Get only relevant conversations for hary
+  - [ ] Validate message sender
 - [ ] Deployment
   - [x] Containerize backend
   - [x] Build script

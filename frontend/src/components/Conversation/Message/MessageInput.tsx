@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react";
-import { FiSend } from "react-icons/fi";
+import { AiOutlineSend } from "react-icons/ai";
 
 interface MessageInputProps {
   handleSendMessage: () => any;
@@ -38,7 +38,7 @@ const MessageInput: FunctionComponent<MessageInputProps> = ({
   };
 
   return (
-    <div className="fixed bottom-0 z-20 flex w-full items-center space-x-2 bg-gradient-to-t from-base-100 from-85% p-3 lg:w-[calc(100vw-20em)]">
+    <div className="fixed bg-base-100 bottom-0 z-20 flex w-full items-center space-x-2 p-3 lg:w-[calc(100vw-20em)]">
       <textarea
         className={`p-2 input input-bordered box-border flex-grow`}
         onKeyDown={handleKeyDown}
@@ -50,7 +50,7 @@ const MessageInput: FunctionComponent<MessageInputProps> = ({
         {isSendMessageLoading ? (
           <span className="loading loading-lg"></span>
         ) : (
-          <FiSend />
+          <AiOutlineSend />
         )}
       </button>
     </div>

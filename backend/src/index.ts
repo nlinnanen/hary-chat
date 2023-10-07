@@ -27,30 +27,30 @@ export default {
       throw new Error("Bot token not defined!");
     }
 
-    const bot = new Telegraf(process.env.BOT_TOKEN);
+    // const bot = new Telegraf(process.env.BOT_TOKEN);
 
-    // // Workaround to avoid issue with TSconfig
-    // const createWebhookListener = async () => {
-    //   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    //   strapi.server.use(async (ctx, next) =>
-    //     (await bot.createWebhook({ domain: process.env.DOMAIN }))(
-    //       ctx.req,
-    //       ctx.res,
-    //       next
-    //     )
-    //   );
-    // };
+    // // // Workaround to avoid issue with TSconfig
+    // // const createWebhookListener = async () => {
+    // //   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    // //   strapi.server.use(async (ctx, next) =>
+    // //     (await bot.createWebhook({ domain: process.env.DOMAIN }))(
+    // //       ctx.req,
+    // //       ctx.res,
+    // //       next
+    // //     )
+    // //   );
+    // // };
 
-    bot.start((ctx) => {
-      strapi.log.info("In start command.");
-      return ctx.reply("Welcome, Your chat id is: " + ctx.chat.id);
-    });
+    // bot.start((ctx) => {
+    //   strapi.log.info("In start command.");
+    //   return ctx.reply("Welcome, Your chat id is: " + ctx.chat.id);
+    // });
 
-    bot.launch();
+    // bot.launch();
 
-    strapi.server.use(async (ctx, next) => {
-      ctx.state.bot = bot;
-      await next();
-    });
+    // strapi.server.use(async (ctx, next) => {
+    //   ctx.state.bot = bot;
+    //   await next();
+    // });
   },
 };

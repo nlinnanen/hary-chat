@@ -14,7 +14,7 @@ export default {
      path: '/conversation/uuid/:uuid',
      handler: 'conversation-by-uuid.getConversationByUuid',
      config: {
-       policies: [],
+       policies: ['global::is-valid'],
        middlewares: [],
      },
     },
@@ -23,7 +23,7 @@ export default {
      path: '/conversation/uuid/:uuid',
      handler: 'conversation-by-uuid.deleteConversationByUuid',
      config: {
-       policies: [],
+       policies: ['global::is-valid'],
        middlewares: [],
      },
     }

@@ -6,6 +6,7 @@ import { useQuery } from "react-query";
 import Conversations from "../Conversation/Conversations";
 import Login from "./Login";
 import NoHaryKey from "./NoHaryKey";
+import { getConversations } from "src/api/conversation/conversation";
 
 const getHaryPrivateKey = async () => {
   const data = await getPrivateKey("hary");
@@ -18,13 +19,26 @@ export default function Hary() {
   const { currentHary } = useHary();
 
   const getConversationIds = async () => {
-    console.log(currentHary)
-    const ids =
-      (currentHary?.attributes?.conversations?.data
-        ?.map((e) => e?.attributes?.uuid)
-        .filter((e) => e) as unknown as string[]) ?? [];
-    console.log(currentHary?.attributes?.conversations?.data)
-    console.log(ids);
+    const data = await getConversations({
+      // @ts-ignore
+      fields: {
+        0: "uuid",
+      },
+      populate: "harys",
+    });
+
+    if (!data.data.data) {
+      console.error("No conversations found");
+      return [];
+    }
+
+    const ids = data.data.data
+      ?.filter((conversation) =>
+        conversation.attributes?.harys?.data?.some(
+          (h) => h.id == currentHary?.id
+        )
+      )
+      .map((conversation) => conversation.attributes?.uuid);
     return ids;
   };
 

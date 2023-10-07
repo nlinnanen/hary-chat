@@ -29,7 +29,7 @@ export default {
       console.log("Deleted conversations: ", conversationIds)
     },
     options: {
-      rule: "* * 0 * * *",
+      rule: "0 0 0 * * *",
     },
   },
 };

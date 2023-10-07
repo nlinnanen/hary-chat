@@ -9,7 +9,7 @@ export default defineConfig(({ command }) => {
       server: {
         headers: {
           "Content-Security-Policy":
-            "default-src 'none'; script-src 'self' 'unsafe-inline'; connect-src 'self' http://localhost:1337; img-src 'self'; style-src 'self' 'unsafe-inline'; manifest-src 'self'",
+            "default-src 'none'; script-src 'self' 'unsafe-inline'; connect-src 'self' http://localhost:1337; img-src 'self' http://localhost:1337 data: ; style-src 'self' 'unsafe-inline'; manifest-src 'self'",
         },
       },
       plugins: [react(), viteTsconfigPaths()],
@@ -19,7 +19,7 @@ export default defineConfig(({ command }) => {
       server: {
         headers: {
           "Content-Security-Policy":
-            "default-src 'none'; script-src 'self'; connect-src 'self' https://hary-bot.fly.dev; img-src 'self' ; style-src 'self'; manifest-src 'self'",
+            "default-src 'none'; script-src 'self'; connect-src 'self' harychat.azurewebsites.net; img-src 'self' ; style-src 'self'; manifest-src 'self'",
         },
       },
       plugins: [react(), viteTsconfigPaths()],

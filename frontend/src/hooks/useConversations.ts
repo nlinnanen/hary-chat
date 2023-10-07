@@ -1,24 +1,19 @@
+import { encryptText } from "@utils/crypto/messages";
+import { verifyKey } from "@utils/verifyKey";
+import axios from "axios";
 import { useQuery, useQueryClient } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { usePostConversations } from "src/api/conversation/conversation";
 import {
-  createUserId,
-  deleteKey,
+  HaryListResponseDataItem
+} from "src/api/documentation.schemas";
+import { usePostMessages } from "src/api/message/message";
+import { v4 } from "uuid";
+import {
   generateKeys,
-  getUserId,
   storeKey,
 } from "../utils/crypto/keys";
-import { v4 } from "uuid";
 import useHary from "./useHary";
-import { usePostMessages } from "src/api/message/message";
-import { encryptText } from "@utils/crypto/messages";
-import {
-  Hary,
-  HaryListResponseDataItem,
-  HaryUser,
-} from "src/api/documentation.schemas";
-import { ConversationFrontend } from "src/types";
-import axios from "axios";
 
 export default function useConversations(
   getConversationIds: () => Promise<(string | undefined)[]>
@@ -63,15 +58,14 @@ export default function useConversations(
 
   const createConversation = async (
     message: string,
-    selectedHarys: HaryListResponseDataItem[]
+    selectedHarys: HaryListResponseDataItem[],
+    passphrase: string,
   ) => {
+    console.log("createConversation", passphrase);
+    if (!passphrase) return console.error("no passphrase");
     if (!harys) return console.error("harys not loaded");
-    const deviceId = await (conversationIds?.length === 0
-      ? createUserId()
-      : getUserId());
-
     const uuid = v4();
-    const { publicKey, privateKey } = await generateKeys();
+    const { publicKey, privateKey } = await generateKeys(passphrase);
     await mutateConversation(
       {
         data: {
@@ -84,19 +78,19 @@ export default function useConversations(
       },
       {
         async onSuccess(data) {
-          console.log(data);
           const conversation = {
             ...data.data.data?.attributes,
             id: data.data.data?.id,
           };
           if (!conversation.uuid) return console.error("no uuid");
-          storeKey(uuid, privateKey);
+          await storeKey(uuid, privateKey);
+          await verifyKey(uuid, uuid, passphrase)
 
           const content = await encryptText(
             message,
             [publicKey, ...selectedHarys.map((h) => h.attributes?.publicKey!)],
             uuid,
-            deviceId
+            passphrase!
           );
           sendMessage({
             data: {

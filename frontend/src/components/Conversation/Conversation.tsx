@@ -5,6 +5,8 @@ import { useParams } from "react-router-dom";
 import MessageInput from "./Message/MessageInput";
 import MessageList from "./Message/MessageList";
 import { PiTrashLight } from "react-icons/pi";
+import ExportKey from "@components/ExportKey/ExportKey";
+import PassphraseModal from "./PassphraseModal";
 
 function Conversation({ databaseKey }: { databaseKey?: string }) {
   const conversationId = useParams().conversationId!;
@@ -20,6 +22,8 @@ function Conversation({ databaseKey }: { databaseKey?: string }) {
     isSendMessageLoading,
     conversation,
     deleteConversation,
+    passphrase,
+    setPassphrase
   } = useMessages(conversationId, databaseKey, chatRef, areRef);
 
   const { harysMap } = useHary();
@@ -30,11 +34,24 @@ function Conversation({ databaseKey }: { databaseKey?: string }) {
     }
   };
 
+  const handlePassphraseKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      setPassphrase((e.target as HTMLInputElement).value);
+    }
+  }
+
   useEffect(() => {
     chatRef.current?.scrollIntoView();
   }, [conversationId]);
 
   const isLoading = conversationLoading;
+
+
+  if(!passphrase) {
+    return (
+      <PassphraseModal handleKeyUp={handlePassphraseKeyUp} />
+    )
+  }
 
   if (isError)
     return (
@@ -57,7 +74,7 @@ function Conversation({ databaseKey }: { databaseKey?: string }) {
           </p>
         </div>
       </div>
-    );
+    ); 
 
   if (isLoading) {
     return (
@@ -68,9 +85,8 @@ function Conversation({ databaseKey }: { databaseKey?: string }) {
   }
 
   return (
-    <div className="flex h-full flex-col">
-      <div className="flex h-full flex-col overflow-y-auto p-2 py-20">
-        <div className="fixed top-0 z-10 flex h-16 w-full items-center justify-end bg-gradient-to-b from-base-100 from-80% text-sm font-semibold text-base-content">
+    <div className="flex h-screen flex-col">
+        <div className="flex h-16 w-full items-center justify-end text-sm font-semibold text-base-content">
           Conversation with&nbsp;
           {conversation?.harys.map((h, i, a) => {
             const hary = harysMap.get(h.id)?.user?.data?.attributes;
@@ -81,6 +97,7 @@ function Conversation({ databaseKey }: { databaseKey?: string }) {
               </span>
             );
           })}
+          {databaseKey != "hary" && <ExportKey />}
           <button
             className="btn btn-ghost mx-4 hover:bg-warning"
             onClick={handleDelete}
@@ -88,6 +105,7 @@ function Conversation({ databaseKey }: { databaseKey?: string }) {
             <PiTrashLight className="text-lg" />
           </button>
         </div>
+      <div className="flex grow flex-col overflow-y-auto p-2 pb-20">
         <MessageList messages={messages} harysMap={harysMap} />
         <div ref={chatRef} />
       </div>
