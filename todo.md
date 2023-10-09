@@ -34,6 +34,12 @@
   - [x] Remove create conv from hary
   - [x] Empty conv message not centered
   - [x] Input not bottom on phone screen
+  - [ ] Focus on passphrase input
+  - [ ] Passphrase input as modal
+  - [ ] Dont request passphrase multiple times
+  - [ ] Tooltips
+  - [ ] Explain passphrase
+  - [ ] Make passphrase input password type
 
 ## Overall
 

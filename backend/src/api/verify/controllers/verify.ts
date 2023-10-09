@@ -15,17 +15,8 @@ export default {
   },
   async validateChallenge(ctx, next) {
     const { signedChallenge, uuid } = ctx.request.body;
-
-    // Fetch conversation from database
-    const conversation = await strapi.entityService.findMany( "api::conversation.conversation",
-    {
-      fields: 'publicKey',
-      filters: {
-        uuid,
-      },
-    });
-
-    const publicKey = conversation?.[0]?.publicKey;
+    console.log(ctx.state)
+    const publicKey = await getPublicKey(uuid, ctx.state.user);
 
     // Fetch challenge from session
     const challenge = ctx.session.challenge;
@@ -63,5 +54,31 @@ async function verifySignature(signedMessage, originalMessage, publicKey) {
     return decodedMessage === originalMessage;
   } else {
     return false;
+  }
+}
+
+
+async function getPublicKey(uuid:string, user: any) {
+  if(user) {
+    console.log("user", user)
+    console.log("user", user?.id)
+    // Fetch user from database
+    const dbUser = await strapi.entityService.findMany( "api::hary.hary",
+    {
+      filters: {
+        user: user?.id,
+      },
+    });
+    return dbUser?.[0]?.publicKey;
+  } else {
+    // Fetch conversation from database
+    const conversation = await strapi.entityService.findMany( "api::conversation.conversation",
+    {
+      fields: 'publicKey',
+      filters: {
+        uuid,
+      },
+    });
+  return  conversation?.[0]?.publicKey;
   }
 }
