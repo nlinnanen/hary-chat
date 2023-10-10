@@ -1,24 +1,47 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, useEffect, useRef } from "react";
+import { IoLockClosed, IoLockOpen, IoSend } from "react-icons/io5";
+import Message from "./Message/Message";
+import Warning from "@components/Warning";
 
 interface PassphraseModalProps {
   handleKeyUp: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  errorMessage?: string;
+  message?: string;
 }
 
 const PassphraseModal: FunctionComponent<PassphraseModalProps> = ({
-  handleKeyUp
+  handleKeyUp,
+  message,
+  errorMessage,
 }) => {
+  const ref = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    ref.current?.focus();
+  });
 
   return (
-    <div className="h-full w-full flex justify-center items-center">
-      <div className="bg-neutral p-8 rounded-md w-2/5">
-        <h1 className="ml-2">Enter passphrase</h1>
-        <input
-          type="text"
-          className="input input-bordered w-full mt-4"
-          placeholder="Passphrase"
-          onKeyUp={handleKeyUp}
-        />
+    <div className="flex h-full w-full items-center justify-center">
+      <div className="w-2/5 rounded-md bg-neutral p-8">
+        <h1 className="ml-2 text-xl">Enter passphrase</h1>
+        {message && <p className="ml-2 mt-2">{message}</p>}
+        <div className="mt-4 flex w-full items-center ">
+          <input
+            className="input input-bordered w-full"
+            placeholder="Passphrase"
+            onKeyUp={handleKeyUp}
+            ref={ref}
+          />
+          <button className="btn btn-neutral">
+            <IoLockOpen />
+          </button>
+        </div>
       </div>
+      {errorMessage && (
+        <div className="toast">
+          <Warning text={errorMessage} />
+        </div>
+      )}
     </div>
   );
 };

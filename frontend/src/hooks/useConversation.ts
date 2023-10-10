@@ -2,7 +2,7 @@ import { deleteKey } from "@utils/crypto/keys";
 import { decryptText } from "@utils/crypto/messages";
 import { verifyKey } from "@utils/verifyKey";
 import axios from "axios";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "react-query";
 import {
   HaryListResponseDataItem,
@@ -72,7 +72,7 @@ export default function useConversation(
 ) {
   const [passphrase, setPassphrase] = useState<string | undefined>(undefined);
   const { isLoading: harysLoading, currentHary, harys } = useHary();
-  const { data, refetch, isLoading, isRefetching, isError } = useQuery(
+  const { data, refetch, isLoading, isRefetching, isError, error } = useQuery(
     ["conversation", conversationId],
     () =>
       queryConversation(
@@ -98,6 +98,13 @@ export default function useConversation(
       conversationHaryPublicKeys,
     };
   }, [data]);
+
+
+  useEffect(() => {
+    if((error as any)?.message?.includes("passphrase")) {
+      setPassphrase(undefined)
+    }
+  }, [error])
 
   const deleteConversation = async () => {
     const conversationToken = window.localStorage.getItem(
@@ -125,5 +132,6 @@ export default function useConversation(
     setPassphrase,
     passphrase,
     isError,
+    error
   };
 }

@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
+import { useQueryClient } from "react-query";
+import { usePostMessages } from "src/api/message/message";
+import { ConversationFrontend } from "src/types";
 import { encryptText } from "../utils/crypto/messages";
 import useConversation from "./useConversation";
-import { usePutConversationsId } from "src/api/conversation/conversation";
-import { usePostMessages } from "src/api/message/message";
-import { useQueryClient } from "react-query";
-import { ConversationFrontend } from "src/types";
 
 export default function useMessages(
   conversationId: string,
@@ -27,6 +26,7 @@ export default function useMessages(
     setPassphrase,
     passphrase,
     isError,
+    error,
   } = useConversation(conversationId, dataBaseKey);
   const { mutate: sendMessage, isLoading: isSendMessageLoading } =
     usePostMessages();
@@ -110,6 +110,7 @@ export default function useMessages(
     isSendMessageLoading,
     isLoading,
     isError,
+    error,
     setPassphrase,
     passphrase,
   };

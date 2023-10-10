@@ -23,7 +23,8 @@ function Conversation({ databaseKey }: { databaseKey?: string }) {
     conversation,
     deleteConversation,
     passphrase,
-    setPassphrase
+    setPassphrase,
+    error
   } = useMessages(conversationId, databaseKey, chatRef, areRef);
 
   const { harysMap } = useHary();
@@ -38,7 +39,7 @@ function Conversation({ databaseKey }: { databaseKey?: string }) {
     if (e.key === "Enter") {
       setPassphrase((e.target as HTMLInputElement).value);
     }
-  }
+  };
 
   useEffect(() => {
     chatRef.current?.scrollIntoView();
@@ -47,15 +48,14 @@ function Conversation({ databaseKey }: { databaseKey?: string }) {
   const isLoading = conversationLoading;
 
 
-  if(!passphrase) {
-    return (
-      <PassphraseModal handleKeyUp={handlePassphraseKeyUp} />
-    )
+  if (!passphrase || (error as any)?.message.includes("passphrase")) {
+    return <PassphraseModal handleKeyUp={handlePassphraseKeyUp} errorMessage={(error as any)?.message}/>;
   }
 
   if (isError)
     return (
       <div className="flex h-full w-full items-center justify-center text-center">
+        {!passphrase && <PassphraseModal handleKeyUp={handlePassphraseKeyUp} />}
         <div className="w-2/3">
           <h1 className="p-6 text-3xl font-bold">Error</h1>
           <p>
@@ -67,14 +67,14 @@ function Conversation({ databaseKey }: { databaseKey?: string }) {
             decrypt this conversation. This might be because you are using a
             different device than you created the conversation with or you have
             cleared your browser data. <br /> <br />
-            In either case, you can't access this conversation anymore. <br /><br />
-            {databaseKey === "hary" && (
-              "For a häry, this error might be caused if you clicked 'hary bot user' instead of 'hary' when prompted for the passkey"
-            )}
+            In either case, you can't access this conversation anymore. <br />
+            <br />
+            {databaseKey === "hary" &&
+              "For a häry, this error might be caused if you clicked 'hary bot user' instead of 'hary' when prompted for the passkey"}
           </p>
         </div>
       </div>
-    ); 
+    );
 
   if (isLoading) {
     return (
@@ -86,25 +86,25 @@ function Conversation({ databaseKey }: { databaseKey?: string }) {
 
   return (
     <div className="flex h-screen flex-col">
-        <div className="flex h-16 w-full items-center justify-end text-sm font-semibold text-base-content">
-          Conversation with&nbsp;
-          {conversation?.harys.map((h, i, a) => {
-            const hary = harysMap.get(h.id)?.user?.data?.attributes;
-            return (
-              <span key={h.id}>
-                {hary?.firstName} {hary?.lastName}
-                {i !== a.length - 1 && <>,&nbsp;</>}
-              </span>
-            );
-          })}
-          {databaseKey != "hary" && <ExportKey />}
-          <button
-            className="btn btn-ghost mx-4 hover:bg-warning"
-            onClick={handleDelete}
-          >
-            <PiTrashLight className="text-lg" />
-          </button>
-        </div>
+      <div className="flex h-16 w-full items-center justify-end text-sm font-semibold text-base-content">
+        Conversation with&nbsp;
+        {conversation?.harys.map((h, i, a) => {
+          const hary = harysMap.get(h.id)?.user?.data?.attributes;
+          return (
+            <span key={h.id}>
+              {hary?.firstName} {hary?.lastName}
+              {i !== a.length - 1 && <>,&nbsp;</>}
+            </span>
+          );
+        })}
+        {databaseKey != "hary" && <ExportKey />}
+        <button
+          className="btn btn-ghost mx-4 hover:bg-warning"
+          onClick={handleDelete}
+        >
+          <PiTrashLight className="text-lg" />
+        </button>
+      </div>
       <div className="flex grow flex-col overflow-y-auto p-2 pb-20">
         <MessageList messages={messages} harysMap={harysMap} />
         <div ref={chatRef} />

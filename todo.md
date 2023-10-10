@@ -14,15 +14,15 @@
   - [ ] Validate sender public key is hary
   - [x] Passphrases
   - [x] Use https
-  - [ ] PREVENT UPDATE OF HARY PUBLIC KEY
-  - [ ] CORS
-  - [ ] Get only relevant conversations for hary
-  - [ ] Validate message sender
+  - [x] PREVENT UPDATE OF HARY PUBLIC KEY
+  - [x] CORS
+  - [x] Get only relevant conversations for hary
+  - [x] Validate message sender
 - [ ] Deployment
   - [x] Containerize backend
   - [x] Build script
-  - [ ] Provision azure resources
-  - [ ] Deploy to azure
+  - [x] Provision azure resources
+  - [x] Deploy to azure
   - [ ] CI/CD for a prod branch
   - [ ] Performance testing
 - [ ] UI fixes:
@@ -34,9 +34,9 @@
   - [x] Remove create conv from hary
   - [x] Empty conv message not centered
   - [x] Input not bottom on phone screen
-  - [ ] Focus on passphrase input
-  - [ ] Passphrase input as modal
-  - [ ] Dont request passphrase multiple times
+  - [x] Focus on passphrase input
+  - [x] Passphrase input as modal
+  - [x] Dont request passphrase multiple times
   - [ ] Tooltips
   - [ ] Explain passphrase
   - [ ] Make passphrase input password type
