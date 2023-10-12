@@ -13,8 +13,8 @@ const NoHaryKey = () => {
     <div className="flex h-screen flex-col items-center justify-center text-center">
       <div className="m-8 w-1/3">
         {publicKeyExists
-          ? "This account already has been configured on another device. Please use that device to send messages from this account."
-          : "This account has not been configured yet. Please create a new key pairs to encrypt and decrypt messages"}
+          ? "Tämä käyttäjä on jo konfiguroitu toisella laitteella. Vie salausavain tiedostoon ja lataa se tähän."
+          : "Tämä käyttäjä ei ole vielä konfiguroitu. Aseta salasana ja luo uusi salausavain"}
       </div>
       {publicKeyExists ? (
         <ImportKey text="Lataa salausavain tiedostosta" onSuccess={(_) => window.location.reload()}/>

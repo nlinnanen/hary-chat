@@ -97,9 +97,9 @@ const Questions = () => {
       </div>
       <Link
         to={"/conversation"}
-        className="fixed bottom-4 left-0 w-full text-center text-xs text-opacity-30 underline"
+        className="fixed bottom-4 left-0 w-full text-center text-lg text-opacity-30 underline"
       >
-        Chat with hary
+        Suoraan keskusteluun
       </Link>
     </div>
   );

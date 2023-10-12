@@ -51,16 +51,16 @@ const ConversationList: FunctionComponent<ConversationListProps> = ({
         {databaseKey == "hary" ? (
           <div className="flex flex-col">
             <Link to="/hary/settings" className="btn">
-              Settings
+              Asetukset
             </Link>
             </div>
         ) : (
-          <div className="flex flex-col">
+          <div className="flex flex-col items-center">
             <button className="btn mt-4 align-middle" onClick={newConversation}>
-              New conversation
+              Uusi keskustelu
             </button>
             <ImportKey
-              text="Import conversation"
+              text="Lataa keskustelu"
               onSuccess={(cId: string) =>
                 window.location.replace(`/conversation/${cId}`)
               }

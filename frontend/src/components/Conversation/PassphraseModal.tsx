@@ -23,12 +23,12 @@ const PassphraseModal: FunctionComponent<PassphraseModalProps> = ({
   return (
     <div className="flex h-full w-full items-center justify-center">
       <div className="w-2/5 rounded-md bg-neutral p-8">
-        <h1 className="ml-2 text-xl">Enter passphrase</h1>
+        <h1 className="ml-2 text-xl">Syötä salauslause</h1>
         {message && <p className="ml-2 mt-2">{message}</p>}
         <div className="mt-4 flex w-full items-center ">
           <input
             className="input input-bordered w-full"
-            placeholder="Passphrase"
+            placeholder="Salauslause"
             onKeyUp={handleKeyUp}
             ref={ref}
           />

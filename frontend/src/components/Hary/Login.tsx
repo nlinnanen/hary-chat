@@ -45,7 +45,7 @@ export default function Login({
       >
         <div className="mb-4">
           <label className="mb-2 block text-sm font-bold" htmlFor="email">
-            Email
+            Sähköposti
           </label>
           <input
             name="email"
@@ -57,19 +57,19 @@ export default function Login({
         </div>
         <div className="mb-6">
           <label className="mb-2 block text-sm font-bold" htmlFor="password">
-            Password
+            Salasana
           </label>
           <input
             name="password"
             className="input input-bordered w-full"
             type="password"
-            placeholder="Password"
+            placeholder="Salasana"
             required
           />
         </div>
         <div className="flex items-center justify-between">
           <button className="btn btn-primary" type="submit">
-            Authenticate
+            Kirjaudu
           </button>
         </div>
       </form>

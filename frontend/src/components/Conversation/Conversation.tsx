@@ -63,19 +63,14 @@ function Conversation({ databaseKey }: { databaseKey?: string }) {
         <div className="w-2/3">
           <h1 className="p-6 text-3xl font-bold">Error</h1>
           <p>
-            Something went wrong while fetching the conversation! This
-            conversation might not exists anymore, because you have deleted it
-            or it has been deleted after being inactive for over a month. <br />{" "}
-            <br />
-            Other reason for this error might be that you don't have the key to
-            decrypt this conversation. This might be because you are using a
-            different device than you created the conversation with or you have
-            cleared your browser data. <br /> <br />
-            In either case, you can't access this conversation anymore. <br />
-            <br />
-            {databaseKey === "hary" &&
-              "For a häry, this error might be caused if you clicked 'hary bot user' instead of 'hary' when prompted for the passkey"}
+            Jotain meni pieleen keskustelua haettaessa. Yritä myöhemmin
+            uudelleen. Alla virheilmoitus, joka voi auttaa ongelman ratkaisussa.
           </p>
+          <div className="flex w-full items-center justify-center">
+            <p className="align-center mt-4 flex p-5 items-center rounded-lg bg-base-300 text-center">
+              <div>{(error as any)?.message}</div>
+            </p>
+          </div>
         </div>
       </div>
     );
@@ -90,8 +85,8 @@ function Conversation({ databaseKey }: { databaseKey?: string }) {
 
   return (
     <div className="flex h-screen flex-col">
-      <div className="flex h-16 w-full items-center justify-end text-sm font-semibold text-base-content px-2">
-        Conversation with&nbsp;
+      <div className="flex h-16 w-full items-center justify-end px-2 text-sm font-semibold text-base-content">
+        Keskustelussa mukana:&nbsp;{" "}
         {conversation?.harys.map((h, i, a) => {
           const hary = harysMap.get(h.id)?.user?.data?.attributes;
           return (
