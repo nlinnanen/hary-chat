@@ -24,7 +24,7 @@ function Conversation({ databaseKey }: { databaseKey?: string }) {
     deleteConversation,
     passphrase,
     setPassphrase,
-    error
+    error,
   } = useMessages(conversationId, databaseKey, chatRef, areRef);
 
   const { harysMap } = useHary();
@@ -47,9 +47,13 @@ function Conversation({ databaseKey }: { databaseKey?: string }) {
 
   const isLoading = conversationLoading;
 
-
   if (!passphrase || (error as any)?.message.includes("passphrase")) {
-    return <PassphraseModal handleKeyUp={handlePassphraseKeyUp} errorMessage={(error as any)?.message}/>;
+    return (
+      <PassphraseModal
+        handleKeyUp={handlePassphraseKeyUp}
+        errorMessage={(error as any)?.message}
+      />
+    );
   }
 
   if (isError)
@@ -86,7 +90,7 @@ function Conversation({ databaseKey }: { databaseKey?: string }) {
 
   return (
     <div className="flex h-screen flex-col">
-      <div className="flex h-16 w-full items-center justify-end text-sm font-semibold text-base-content">
+      <div className="flex h-16 w-full items-center justify-end text-sm font-semibold text-base-content px-2">
         Conversation with&nbsp;
         {conversation?.harys.map((h, i, a) => {
           const hary = harysMap.get(h.id)?.user?.data?.attributes;
@@ -97,13 +101,17 @@ function Conversation({ databaseKey }: { databaseKey?: string }) {
             </span>
           );
         })}
-        {databaseKey != "hary" && <ExportKey />}
-        <button
-          className="btn btn-ghost mx-4 hover:bg-warning"
-          onClick={handleDelete}
-        >
-          <PiTrashLight className="text-lg" />
-        </button>
+        {databaseKey != "hary" && (
+          <>
+            <ExportKey />
+            <button
+              className="btn btn-ghost mx-4 hover:bg-warning"
+              onClick={handleDelete}
+            >
+              <PiTrashLight className="text-lg" />
+            </button>
+          </>
+        )}
       </div>
       <div className="flex grow flex-col overflow-y-auto p-2 pb-20">
         <MessageList messages={messages} harysMap={harysMap} />

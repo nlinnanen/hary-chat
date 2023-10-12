@@ -1,5 +1,6 @@
 import ImportKey from "@components/ExportKey/ImportKey";
 import { FunctionComponent } from "react";
+import { Link } from "react-router-dom";
 
 interface ConversationListProps {
   conversations: any[];
@@ -47,12 +48,23 @@ const ConversationList: FunctionComponent<ConversationListProps> = ({
             );
           })}
         </div>
-        {databaseKey != "hary" && (
+        {databaseKey == "hary" ? (
+          <div className="flex flex-col">
+            <Link to="/hary/settings" className="btn">
+              Settings
+            </Link>
+            </div>
+        ) : (
           <div className="flex flex-col">
             <button className="btn mt-4 align-middle" onClick={newConversation}>
               New conversation
             </button>
-            <ImportKey />
+            <ImportKey
+              text="Import conversation"
+              onSuccess={(cId: string) =>
+                window.location.replace(`/conversation/${cId}`)
+              }
+            />
           </div>
         )}
       </div>

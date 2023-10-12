@@ -1,3 +1,4 @@
+import ImportKey from "@components/ExportKey/ImportKey";
 import useHary from "@hooks/useHary";
 import { useState } from "react";
 
@@ -15,7 +16,9 @@ const NoHaryKey = () => {
           ? "This account already has been configured on another device. Please use that device to send messages from this account."
           : "This account has not been configured yet. Please create a new key pairs to encrypt and decrypt messages"}
       </div>
-      {publicKeyExists ? null : (
+      {publicKeyExists ? (
+        <ImportKey text="Lataa salausavain tiedostosta" onSuccess={(_) => window.location.reload()}/>
+      ) : (
         <>
           <input
             type="text"

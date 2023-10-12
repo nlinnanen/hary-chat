@@ -5,7 +5,12 @@ interface JsonData {
   [key: string]: any;
 }
 
-const ImportKey: React.FC = () => {
+interface Props {
+  text: string;
+  onSuccess: (cId: string) => void;
+}
+
+const ImportKey: React.FC<Props> = ({ text, onSuccess }: Props) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleOpenFileInput = () => {
@@ -22,7 +27,9 @@ const ImportKey: React.FC = () => {
             event?.target?.result! as string
           ) as JsonData;
           storeKey(conversationId, privateKey);
-          window.location.replace(`/conversation/${conversationId}`);
+
+
+          onSuccess(conversationId);
         } catch (error) {
           console.error("Error parsing JSON file:", error);
         }
@@ -34,9 +41,9 @@ const ImportKey: React.FC = () => {
   };
 
   return (
-    <>
-      <button onClick={handleOpenFileInput} className="btn mt-4 align-middle">
-        Import conversation
+    <div>
+      <button onClick={handleOpenFileInput} className="btn align-middle">
+        {text}
       </button>
       <input
         ref={fileInputRef}
@@ -45,7 +52,7 @@ const ImportKey: React.FC = () => {
         onChange={handleFileChange}
         accept="application/json"
       />
-    </>
+    </div>
   );
 };
 

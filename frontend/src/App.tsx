@@ -1,4 +1,5 @@
 import Hary from "@components/Hary/Hary";
+import Settings from "@components/Hary/Settings";
 import Public from "@components/Public";
 import Questions from "@components/Questions/Questions";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -11,6 +12,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <Routes>
         <Route path="hary" element={<Hary />} />
+        <Route path="hary/settings" element={<Settings />} />
         <Route path="" element={<Questions />} />
         <Route path="conversation/:conversationId" element={<Public />} />
         <Route path="conversation" element={<Public />} />
