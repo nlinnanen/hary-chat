@@ -1,6 +1,6 @@
 # Harychat
 
-A web app for chatting anonymous and end to end encrypted chat for harrasment contact persons. Currently in production with the guild of industrial engineering and management Prodeko at [https://harychat.prodeko.org](harychat.prodeko.org) (note that the messages go to the real harrasment contact persons so don't send them for testing purposes).
+A web app for chatting anonymous and end to end encrypted chat for harrasment contact persons. Currently in production with the guild of industrial engineering and management Prodeko at [harychat.prodeko.org](https://harychat.prodeko.org) (note that the messages go to the real harrasment contact persons so don't send them for testing purposes).
 
 ## Startup
 
